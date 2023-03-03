@@ -24,8 +24,8 @@ const Content = () => {
           </>
         }
       />
-      <Route exact path="Signup" element={<SignupForm />} />
-      <Route exact path="Login" element={<LoginForm />} />
+      <Route exact path="/Signup" element={<SignupForm />} />
+      <Route exact path="/Login" element={<LoginForm />} />
     </Routes>
   );
 };

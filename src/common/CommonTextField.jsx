@@ -1,15 +1,16 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-const CommonTextField = ({ label, name, props }) => {
+const CommonTextField = ({ label, name, value, error, helperText, props }) => {
   return (
     <>
       <TextField
-        type={"text"}
         fullWidth
         label={label}
         name={name}
-        {...props}
+        value={value}
+        error={error}
+        helperText={helperText}
         sx={{
           "& .MuiOutlinedInput-root": {
             borderRadius: "0rem !important",

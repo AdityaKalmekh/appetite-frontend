@@ -1,7 +1,6 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Container from "@mui/material/Container";
 import { Box, Button, CardMedia, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import Typewriter from "typewriter-effect";

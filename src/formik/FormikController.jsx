@@ -1,21 +1,21 @@
-import TextArea from 'src/components/form-components/TextArea';
-import Select from 'src/components/form-components/Select';
-import RadioButtons from 'src/components/form-components/RadioButtons';
-import CheckBoxes from 'src/components/form-components/CheckBoxes';
-import Input from 'src/components/form-components/Input';
+import TextArea from "../components/form-components/TextArea";
+import Input from "../components/form-components/Input";
+import Select from "../components/form-components/Select";
+import RadioButtons from "../components/form-components/RadioButtons";
+import CheckBoxes from "../components/form-components/CheckBoxes";
 
 const FormikController = (props) => {
   const { control, ...rest } = props;
   switch (control) {
-    case 'input':
+    case "input":
       return <Input {...rest} />;
-    case 'textArea':
+    case "textArea":
       return <TextArea {...rest} />;
-    case 'select':
+    case "select":
       return <Select {...rest} />;
-    case 'radio':
+    case "radio":
       return <RadioButtons {...rest} />;
-    case 'checkbox':
+    case "checkbox":
       return <CheckBoxes {...rest} />;
     default:
       return null;
