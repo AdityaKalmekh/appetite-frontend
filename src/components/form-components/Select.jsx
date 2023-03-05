@@ -17,8 +17,21 @@ function SelectComponent(props) {
         name={name}
         label={label}
         {...rest}
+        sx={{
+          "& .MuiOutlinedSelect-root": {
+            "&:hover fieldset": {
+              borderColor: "#04D010",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#04D010",
+            },
+          },
+          "& .MuiFormLabel-root.Mui-focused": {
+            color: "#04D010",
+          },
+        }}
       >
-        {options.map((option) => {
+        {options?.map((option) => {
           return (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
