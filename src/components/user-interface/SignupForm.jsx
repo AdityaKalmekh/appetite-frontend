@@ -10,10 +10,14 @@ import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
 import SignupFormOTP from "./SignupFormOTP";
 import FormikController from "../../formik/FormikController";
+import useHttp from "../../hooks/useHttp";
+import { toast } from "react-toastify";
 
 const SignupForm = () => {
   const [openSignupOtp, setOpenSignupOtp] = useState(false);
-  const [value, setValue] = useState();
+  const {sendRequest : sendTaskRequest} = useHttp()
+  const [value,setValue] = useState();
+
   const initialValues = {
     phonenumber: "",
     username: "",
@@ -32,9 +36,26 @@ const SignupForm = () => {
     username: Yup.string().required("Required"),
     email: Yup.string().required("Required"),
   });
+
+  const loadNewData = (response) => {
+    console.log({response});
+    if (response === true){
+      toast.error("User already exists")
+    }else{
+      toast.success("Successfully Register")
+      setOpenSignupOtp(true);
+      localStorage.setItem("OTP",response)
+    }
+  }
+
   const onSubmit = (values, { resetForm }) => {
-    console.log({ values });
-    setValue(values);
+    setValue(values)
+    if (values){
+      sendTaskRequest({
+        url:"/verifyUser",
+        method:"post",
+        data:values},loadNewData.bind(null))
+    }
     // if (values) {
     //   mobileOtp(values)
     //     .then(async (res) => {
@@ -49,7 +70,6 @@ const SignupForm = () => {
     //       toast.error(err.message);
     //     });
     // }
-    setOpenSignupOtp(true);
     resetForm();
   };
 
@@ -249,7 +269,7 @@ const SignupForm = () => {
           )}
         </Formik>
       ) : (
-        <SignupFormOTP phonenumber={value} />
+        <SignupFormOTP values={value}/>
       )}
     </>
   );
