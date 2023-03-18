@@ -11,9 +11,11 @@ import { Form, Formik } from "formik";
 import { toast } from "react-toastify";
 import FormikController from "../../formik/FormikController";
 import { Link } from "react-router-dom";
+import useHttp from "../../hooks/useHttp";
 
 const LoginForm = () => {
   const [openLoginOtp, setOpenLoginOtp] = useState(false);
+  const {sendRequest:sendTaskRequest} = useHttp()
   console.log({ openLoginOtp });
   const [value, setValue] = useState();
 
@@ -32,9 +34,23 @@ const LoginForm = () => {
       .required("Required"),
   });
 
+  const response = (result) =>{
+    if (!result){
+      toast.error("Not register yet")
+    }else{
+      localStorage.setItem("OTP",result)
+      setOpenLoginOtp(true);
+    }
+  }
+
   const onSubmit = (values, { resetForm }) => {
     console.log({ values });
     setValue(values);
+    sendTaskRequest({
+      url : "/verifyUser",
+      method : "post",
+      data : {...values,for:"login"}
+    },response.bind(null))
     // if (values) {
     //   mobileOtp(values)
     //     .then(async (res) => {
@@ -49,7 +65,6 @@ const LoginForm = () => {
     //       toast.error(err.message);
     //     });
     // }
-    setOpenLoginOtp(true);
     resetForm();
   };
 

@@ -42,7 +42,6 @@ const SignupForm = () => {
     if (response === true){
       toast.error("User already exists")
     }else{
-      toast.success("Successfully Register")
       setOpenSignupOtp(true);
       localStorage.setItem("OTP",response)
     }
@@ -54,7 +53,7 @@ const SignupForm = () => {
       sendTaskRequest({
         url:"/verifyUser",
         method:"post",
-        data:values},loadNewData.bind(null))
+        data:{...values,for:"signup"}},loadNewData.bind(null))
     }
     // if (values) {
     //   mobileOtp(values)

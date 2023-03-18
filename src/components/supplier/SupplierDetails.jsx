@@ -5,8 +5,18 @@ import * as Yup from "yup";
 import CommonContainer from "../../common/CommonContainer";
 import UploadImage from "../../common/UploadImage";
 import FormikController from "../../formik/FormikController";
+import {Autocomplete,useJsApiLoader} from '@react-google-maps/api';
+import { toast } from "react-toastify";
 
 const SupplierDetails = () => {
+
+  const {isLoaded} = useJsApiLoader("AIzaSyARN4ZLpzuzwGo2M6PKr2M--juR5zJyrew")
+
+  if (!isLoaded){
+    toast.error("google map not loded")
+    console.log("google map not loded");
+  }
+
   const FoodType = [
     {
       value: "Veg",
@@ -113,22 +123,24 @@ const SupplierDetails = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <FormikController
-                      control="text"
-                      type="text"
-                      label="Location"
-                      name="location"
-                      fullWidth
-                      value={formik.values.location}
-                      onChange={formik.handleChange}
-                      error={
-                        formik.touched.location &&
-                        Boolean(formik.errors.location)
-                      }
-                      helperText={
-                        formik.touched.location && formik.errors.location
-                      }
-                    />
+                    <Autocomplete>
+                      <FormikController
+                        control="text"
+                        type="text"
+                        label="Location"
+                        name="location"
+                        fullWidth
+                        value={formik.values.location}
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.location &&
+                          Boolean(formik.errors.location)
+                        }
+                        helperText={
+                          formik.touched.location && formik.errors.location
+                        }
+                      />
+                    </Autocomplete>  
                   </Grid>
                   <Grid item xs={6}>
                     <FormikController
