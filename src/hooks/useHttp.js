@@ -20,8 +20,8 @@ const useHttp = () => {
         }else if (requestConfig.method === 'post'){
             try {
                 const responesData = await http.post(requestConfig.url,requestConfig.data)
+                console.log({responesData});
                 applyData(responesData.data)
-                console.log(responesData);
                 if (!responesData.statusText){
                     throw new Error('Request failed')    
                 }
