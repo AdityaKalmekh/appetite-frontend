@@ -43,11 +43,13 @@ const SupplierDetails = () => {
       label: "Egg",
     },
   ];
+  
   const initialValues = {
     servicetitle: "",
     contact: "",
-    location: "",
     foodtype: "",
+    opening : "",
+    closing : "",
     image : "",
   };
 
@@ -114,10 +116,10 @@ const SupplierDetails = () => {
                     justifyContent: "center",
                   }}
                 >
-                  <Typography variant="h4">Supplier Detais</Typography>
+                  <Typography variant="h4">Tiffin Service Details</Typography>
                 </Grid>
                 <Grid container item spacing={1}>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormikController
                       control="text"
                       type="text"
@@ -140,7 +142,7 @@ const SupplierDetails = () => {
                     <FormikController
                       control="text"
                       type="text"
-                      label="contact No"
+                      label="Enter Owner Number"
                       name="contact"
                       fullWidth
                       value={formik.values.contact}
@@ -153,11 +155,11 @@ const SupplierDetails = () => {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
-                    {/* <Autocomplete> */}
+                  {/* <Grid item xs={6}>
+                    <Autocomplete>
                       <Input value={value} type="text" onChange={handleInput}/>
                       {status === 'OK' && data.map(sug => {return console.log(sug.description);})}
-                      {/* <FormikController
+                      <FormikController
                         control="text"
                         type="text"
                         label="Location"
@@ -172,9 +174,9 @@ const SupplierDetails = () => {
                         helperText={
                           formik.touched.location && formik.errors.location
                         }
-                      /> */}
-                    {/* </Autocomplete>   */}
-                  </Grid>
+                      /> 
+                     </Autocomplete>  
+                  </Grid> */}
                   <Grid item xs={6}>
                     <FormikController
                       control="select"
@@ -194,11 +196,11 @@ const SupplierDetails = () => {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={3}>
                     <FormikController
                       control="text"
                       type="text"
-                      label="Timing"
+                      label="Opening Time"
                       name="timing"
                       fullWidth
                       value={formik.values.timing}
@@ -208,9 +210,27 @@ const SupplierDetails = () => {
                       }
                       helperText={formik.touched.timing && formik.errors.timing}
                     />
-                    <Typography variant="subtitle2" color="red">
+                    {/* <Typography variant="subtitle2" color="red">
                       *Mention time uptill when orders are taken
-                    </Typography>
+                    </Typography> */}
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormikController
+                      control="text"
+                      type="text"
+                      label="Closing Time"
+                      name="timing"
+                      fullWidth
+                      value={formik.values.timing}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.timing && Boolean(formik.errors.timing)
+                      }
+                      helperText={formik.touched.timing && formik.errors.timing}
+                    />
+                    {/* <Typography variant="subtitle2" color="red">
+                      *Mention time uptill when orders are taken
+                    </Typography> */}
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <Typography

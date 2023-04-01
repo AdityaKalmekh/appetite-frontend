@@ -7,6 +7,7 @@ import SignupForm from "../components/user-interface/SignupForm";
 import Header from "./Header";
 import SupplierDetails from "../components/supplier/SupplierDetails";
 import HomePage from "../components/user-interface/HomePage";
+import LocationDetails from "../components/supplier/LocationDetails";
 
 const Content = () => {
   return (
@@ -33,6 +34,7 @@ const Content = () => {
       <Route exact path="/Header" element={<Header />} />
       {/* <Route exact path="/Supplier-Dashboard" element={<SupplierDashboard />} /> */}
       <Route exact path="/Supplier-Details" element={<SupplierDetails />} />
+      <Route exact path="/Location-Details" element={<LocationDetails />} />
       <Route exact path="/home" element={<HomePage />} />
     </Routes>
   );
