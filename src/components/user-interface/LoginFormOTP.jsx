@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { CardMedia, Divider } from "@mui/material";
 import { Form, Formik } from "formik";
 import FormikController from "../../formik/FormikController";
+import { toast } from "react-toastify";
 
 const LoginFormOTP = () => {
   const initialValues = {
@@ -17,12 +18,23 @@ const LoginFormOTP = () => {
     loginotp: Yup.string()
       .required()
       .matches(/^[0-9]+$/, "Must be only digits")
-      .min(5, "Must be exactly 5 digits")
-      .max(5, "Must be exactly 5 digits"),
+      .min(6, "Must be exactly 6 digits")
+      .max(6, "Must be exactly 6 digits"),
   });
 
+  setTimeout(function() {
+    localStorage.removeItem('OTP')
+  },40000)
+
   const onSubmit = (values, { resetForm }) => {
-    console.log({ values });
+    if (values.loginotp === parseInt(localStorage.getItem('OTP'))){
+      console.log("loggin successfully");
+      toast.success('Login successfully')
+    }else if (localStorage.getItem('OTP') === null){
+      console.log("OTP expire");
+    }else{
+      console.log('Wrong OTP');
+    }
     resetForm();
   };
 

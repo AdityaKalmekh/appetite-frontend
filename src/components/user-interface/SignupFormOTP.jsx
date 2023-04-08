@@ -8,25 +8,57 @@ import Typography from "@mui/material/Typography";
 import { CardMedia, Divider } from "@mui/material";
 import FormikController from "../../formik/FormikController";
 import { Form, Formik } from "formik";
+import useHttp from "../../hooks/useHttp";
 
-const SignupFormOTP = () => {
+const SignupFormOTP = (values) => {
+  console.log({values});
+  const {sendRequest} = useHttp()
   const initialValues = {
     signupotp: "",
   };
+
+  setTimeout(function() {
+    localStorage.removeItem('OTP')
+  },40000)
+  // let name = localStorage.getItem('OTP')
+  // console.log(name);
+  
+  const addUserAcknowledgement = (id) =>{
+    if (id){
+      console.log("Successfully register");
+    }
+  }
+
   const validationSchema = Yup.object({
     signupotp: Yup.string()
       .required()
       .matches(/^[0-9]+$/, "Must be only digits")
-      .min(5, "Must be exactly 5 digits")
-      .max(5, "Must be exactly 5 digits"),
+      .min(6, "Must be exactly 6 digits")
+      .max(6, "Must be exactly 6 digits"),
   });
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+  const onSubmit = (value) => {
+    console.log(value.signupotp);
+    console.log(localStorage.getItem('OTP'));
+    if (value.signupotp === parseInt(localStorage.getItem('OTP'))){
+      sendRequest({
+        url : '/addUser',
+        method: 'post',
+        data : values
+      },addUserAcknowledgement.bind(null))
+      localStorage.removeItem('OTP')
+    }else if (localStorage.getItem('OTP') === null){
+      console.log("OTP expire");
+    }else{
+      console.log('Wrong OTP');
+    }
+    // event.preventDefault();
+    // console.log(event.target.value);
+    // const data = new FormData(event.currentTarget);
+    // console.log({data});
+    // console.log({
+    //   password: data.get("signupotp"),
+    // });
   };
 
   return (

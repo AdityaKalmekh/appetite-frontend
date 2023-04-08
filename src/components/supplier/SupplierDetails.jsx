@@ -1,12 +1,34 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, imageListClasses, Typography,Input } from "@mui/material";
 import { Form, Formik } from "formik";
-import React from "react";
 import * as Yup from "yup";
 import CommonContainer from "../../common/CommonContainer";
 import UploadImage from "../../common/UploadImage";
 import FormikController from "../../formik/FormikController";
+import {useLoadScript,Autocomplete} from '@react-google-maps/api';
+import { toast } from "react-toastify";
+import { useState } from "react";
+import useHttp from "../../hooks/useHttp";
+import usePlacesAutocomplete,{getGeocode,getLatLng} from "use-places-autocomplete";
 
 const SupplierDetails = () => {
+
+  const {sendRequest : sendTaskRequest} = useHttp()
+  const [image,setImage] = useState()
+  const [loc,setLoc]= useState()
+
+  const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
+  })
+  console.log(isLoaded);
+
+  const {value,setValue,suggestions:{status,data}} = usePlacesAutocomplete();
+  
+  if (!isLoaded){
+    // toast.error("google map not loded")
+    // console.log("google map not loded");
+    return <div>Loding...</div>
+  }
+  // console.log(props.encodedimg);
   const FoodType = [
     {
       value: "Veg",
@@ -23,10 +45,12 @@ const SupplierDetails = () => {
   ];
   const initialValues = {
     servicetitle: "",
-    phonenumber: "",
+    contact: "",
     location: "",
     foodtype: "",
+    image : "",
   };
+
   const validationSchema = Yup.object({
     servicetitle: Yup.string().required("Required"),
     contact: Yup.string()
@@ -42,10 +66,27 @@ const SupplierDetails = () => {
     foodtype: Yup.string().required("Required"),
   });
 
-  const onSubmit = (e) => {
-    console.log("hello");
-    console.log(e);
+  const addAcknowledgement = (acknowledgement) => {
+    console.log(acknowledgement);
+  }
+
+  const onSubmit = (value) => {
+    sendTaskRequest({
+      url : "/addSupplierDetail",
+      method : 'post',
+      data : {...value,image}
+    },addAcknowledgement.bind(null))
   };
+
+  const encodedImage = (value) => {
+    setImage(value);
+  }
+
+
+  const handleInput = (e) =>{
+    setValue(e.target.value);
+  }
+
 
   return (
     <CommonContainer sx={{ paddingX: "5rem" }}>
@@ -113,22 +154,26 @@ const SupplierDetails = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <FormikController
-                      control="text"
-                      type="text"
-                      label="Location"
-                      name="location"
-                      fullWidth
-                      value={formik.values.location}
-                      onChange={formik.handleChange}
-                      error={
-                        formik.touched.location &&
-                        Boolean(formik.errors.location)
-                      }
-                      helperText={
-                        formik.touched.location && formik.errors.location
-                      }
-                    />
+                    {/* <Autocomplete> */}
+                      <Input value={value} type="text" onChange={handleInput}/>
+                      {status === 'OK' && data.map(sug => {return console.log(sug.description);})}
+                      {/* <FormikController
+                        control="text"
+                        type="text"
+                        label="Location"
+                        name="location"
+                        fullWidth
+                        value={formik.values.location}
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.location &&
+                          Boolean(formik.errors.location)
+                        }
+                        helperText={
+                          formik.touched.location && formik.errors.location
+                        }
+                      /> */}
+                    {/* </Autocomplete>   */}
                   </Grid>
                   <Grid item xs={6}>
                     <FormikController
@@ -174,13 +219,14 @@ const SupplierDetails = () => {
                     >
                       <span>Uplod Image</span>
                     </Typography>
-                    <UploadImage />
+                    <UploadImage encodedImage={encodedImage} />
                   </Grid>
                   <Grid item xs={12}>
                     <Button
                       variant="outlined"
                       onClick={(e) => {
-                        onSubmit(e);
+                        console.log(formik.values);
+                        onSubmit(formik.values);
                       }}
                     >
                       Submit
