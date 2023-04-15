@@ -11,7 +11,6 @@ import useHttp from "../../hooks/useHttp";
 import usePlacesAutocomplete,{getGeocode,getLatLng} from "use-places-autocomplete";
 
 const SupplierDetails = () => {
-
   const {sendRequest : sendTaskRequest} = useHttp()
   const [image,setImage] = useState()
   const [loc,setLoc]= useState()
@@ -48,8 +47,8 @@ const SupplierDetails = () => {
     servicetitle: "",
     contact: "",
     foodtype: "",
-    opening : "",
-    closing : "",
+    openingTime : "",
+    closingTime : "",
     image : "",
   };
 
@@ -84,11 +83,9 @@ const SupplierDetails = () => {
     setImage(value);
   }
 
-
   const handleInput = (e) =>{
     setValue(e.target.value);
   }
-
 
   return (
     <CommonContainer sx={{ paddingX: "5rem" }}>
@@ -155,11 +152,11 @@ const SupplierDetails = () => {
                       }
                     />
                   </Grid>
-                  {/* <Grid item xs={6}>
+                  <Grid item xs={6}>
                     <Autocomplete>
-                      <Input value={value} type="text" onChange={handleInput}/>
-                      {status === 'OK' && data.map(sug => {return console.log(sug.description);})}
-                      <FormikController
+                      {/* <Input value={value} type="text" onChange={handleInput}/>  */}
+                       {/* {status === 'OK' && data.map(sug => {return console.log(sug.description);})}   */}
+                       <FormikController
                         control="text"
                         type="text"
                         label="Location"
@@ -174,9 +171,9 @@ const SupplierDetails = () => {
                         helperText={
                           formik.touched.location && formik.errors.location
                         }
-                      /> 
-                     </Autocomplete>  
-                  </Grid> */}
+                      />  
+                    </Autocomplete>   
+                  </Grid> 
                   <Grid item xs={6}>
                     <FormikController
                       control="select"
@@ -203,7 +200,7 @@ const SupplierDetails = () => {
                       label="Opening Time"
                       name="timing"
                       fullWidth
-                      value={formik.values.timing}
+                      value={formik.values.openingTime}
                       onChange={formik.handleChange}
                       error={
                         formik.touched.timing && Boolean(formik.errors.timing)
@@ -221,7 +218,7 @@ const SupplierDetails = () => {
                       label="Closing Time"
                       name="timing"
                       fullWidth
-                      value={formik.values.timing}
+                      value={formik.values.closingTime}
                       onChange={formik.handleChange}
                       error={
                         formik.touched.timing && Boolean(formik.errors.timing)

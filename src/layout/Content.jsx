@@ -8,6 +8,8 @@ import Header from "./Header";
 import SupplierDetails from "../components/supplier/SupplierDetails";
 import HomePage from "../components/user-interface/HomePage";
 import LocationDetails from "../components/supplier/LocationDetails";
+import PaymentPage from "../components/user-interface/PaymentPage";
+import PaymentSuccess from "../components/user-interface/PaymentSuccess";
 
 const Content = () => {
   return (
@@ -36,6 +38,8 @@ const Content = () => {
       <Route exact path="/Supplier-Details" element={<SupplierDetails />} />
       <Route exact path="/Location-Details" element={<LocationDetails />} />
       <Route exact path="/home" element={<HomePage />} />
+      <Route exact path="/payment" element={<PaymentPage/>}/>
+      <Route exact path="/paymentSuccess" element={<PaymentSuccess/>}/>
     </Routes>
   );
 };

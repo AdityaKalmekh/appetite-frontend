@@ -40,6 +40,41 @@ const LocationDetails = () => {
                       <Typography variant="h4">Location Details</Typography>
                     </Grid>
                     <Grid container item spacing={1}>
+                      <Grid item xs={6}>
+                            <FormikController
+                                control="text"
+                                type="text"
+                                label="Building/House No"
+                                name="foodtype"
+                                fullWidth
+                                value={formik.values.foodtype}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.foodtype &&
+                                    Boolean(formik.errors.foodtype)
+                                }
+                                helperText={
+                                    formik.touched.foodtype && formik.errors.foodtype
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <FormikController
+                            control="text"
+                            type="text"
+                            label="Street Address"
+                            name="address"
+                            fullWidth
+                            value={formik.values.address}
+                            onChange={formik.handleChange}
+                            error={
+                                formik.touched.contact && Boolean(formik.errors.contact)
+                            }
+                            helperText={
+                                formik.touched.contact && formik.errors.contact
+                            }
+                            />
+                        </Grid>
                         <Grid item xs={6}>
                             <FormikController
                             control="text"
@@ -63,35 +98,38 @@ const LocationDetails = () => {
                             <FormikController
                             control="text"
                             type="text"
-                            label="Street Address"
-                            name="address"
+                            label="City"
+                            name="city"
                             fullWidth
-                            value={formik.values.address}
+                            value={formik.values.area}
                             onChange={formik.handleChange}
                             error={
-                                formik.touched.contact && Boolean(formik.errors.contact)
+                                formik.touched.servicetitle &&
+                                Boolean(formik.errors.servicetitle)
                             }
                             helperText={
-                                formik.touched.contact && formik.errors.contact
+                                formik.touched.servicetitle &&
+                                formik.errors.servicetitle
                             }
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <FormikController
-                                control="text"
-                                type="text"
-                                label="Building/House No"
-                                name="foodtype"
-                                fullWidth
-                                value={formik.values.foodtype}
-                                onChange={formik.handleChange}
-                                error={
-                                    formik.touched.foodtype &&
-                                    Boolean(formik.errors.foodtype)
-                                }
-                                helperText={
-                                    formik.touched.foodtype && formik.errors.foodtype
-                                }
+                            control="text"
+                            type="text"
+                            label="State"
+                            name="state"
+                            fullWidth
+                            value={formik.values.area}
+                            onChange={formik.handleChange}
+                            error={
+                                formik.touched.servicetitle &&
+                                Boolean(formik.errors.servicetitle)
+                            }
+                            helperText={
+                                formik.touched.servicetitle &&
+                                formik.errors.servicetitle
+                            }
                             />
                         </Grid>
                         <Grid item xs={6}>
