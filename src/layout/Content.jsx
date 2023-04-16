@@ -9,8 +9,8 @@ import HomePage from "../components/user-interface/HomePage";
 import LocationDetails from "../components/supplier/LocationDetails";
 import PaymentPage from "../components/user-interface/PaymentPage";
 import PaymentSuccess from "../components/user-interface/PaymentSuccess";
-import SupplierMenu from "../components/supplier/SupplierMenu";
-import SupplierDetails from "../components/supplier/SupplierDetails";
+import SupplierDetails from "../components/supplier/SupplierDetails"
+import SupplierMenu from "../components/supplier/SupplierMenu"
 import OrderSummary from "../components/user-interface/OrderSummary";
 
 const Content = () => {
