@@ -30,8 +30,9 @@ const useHttp = () => {
             }
         }else if (requestConfig.method === 'delete'){
             try {
-                 const responseData = await http.delete(`${requestConfig.url}?id=${requestConfig.id}`)
-                 applyData(responseData.data)
+                // console.log(requestConfig.id);
+                const responseData = await http.delete(`${requestConfig.url}?id=${requestConfig.id}`)
+                applyData(responseData.data)
             }catch(err){
                 setError(err.message || "Somthing went wrong")
             }
