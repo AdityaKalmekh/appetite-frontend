@@ -1,15 +1,16 @@
 import { Box } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
-// import DashBoard from "../components/user-interface/DashBoard";
+
 import LoginForm from "../components/user-interface/LoginForm";
 import SignupForm from "../components/user-interface/SignupForm";
-// import SupplierDashboard from "../components/supplier/SupplierDashboard";
+
 import Header from "./Header";
-import SupplierDetails from "../components/supplier/SupplierDetails";
 import HomePage from "../components/user-interface/HomePage";
 import LocationDetails from "../components/supplier/LocationDetails";
 import PaymentPage from "../components/user-interface/PaymentPage";
 import PaymentSuccess from "../components/user-interface/PaymentSuccess";
+import SupplierMenu from "../components/supplier/SupplierMenu";
+
 
 const Content = () => {
   return (
@@ -22,15 +23,15 @@ const Content = () => {
           </>
         }
       />
-      <Route
+      {/* <Route
         exact
         path="/"
         element={
           <>
-            {/* <DashBoard /> */}
+            <DashBoard />
           </>
         }
-      />
+      /> */}
       <Route exact path="/Signup" element={<SignupForm />} />
       <Route exact path="/Login" element={<LoginForm />} />
       <Route exact path="/Header" element={<Header />} />
@@ -40,6 +41,14 @@ const Content = () => {
       <Route exact path="/home" element={<HomePage />} />
       <Route exact path="/payment" element={<PaymentPage/>}/>
       <Route exact path="/paymentSuccess" element={<PaymentSuccess/>}/>
+      {/* <Route exact path="/Dashboard" element={<DashBoard />} /> */}
+      <Route exact path="/HomePage" element={<HomePage />} />
+      <Route exact path="/supplier-menu" element={<SupplierMenu />} />
+      {/* <Route
+        exact
+        path="/ServiceProviderPage"
+        element={<ServiceProviderPage />}
+      /> */}
     </Routes>
   );
 };

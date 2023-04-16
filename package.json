@@ -7,6 +7,8 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.8",
+    "@mui/x-data-grid": "^6.1.0",
+    "@mui/x-data-grid-pro": "^6.1.0",
     "@react-google-maps/api": "^2.7.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
