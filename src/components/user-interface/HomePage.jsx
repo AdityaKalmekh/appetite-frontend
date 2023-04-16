@@ -5,8 +5,23 @@ import StarIcon from "@mui/icons-material/Star";
 import DiscountIcon from "@mui/icons-material/Discount";
 import CommonContainer from "../../common/CommonContainer";
 import Header from "../../layout/Header";
+import useHttp from "../../hooks/useHttp";
+import { useEffect,useState } from "react";
 
 const HomePage = () => {
+
+  const {error,sendRequest:fetchTask}= useHttp()
+  const [suppliers,setSuppliers] = useState([]);
+
+  const loadData = (data) => {
+    setSuppliers(data)
+  }
+
+  // console.log(supplier[0].image);
+  useEffect(() => {
+    fetchTask({url:"/getSupplierDetails",method:"get"},loadData)
+  },[fetchTask])
+  
   return (
     <CommonContainer>
       <Grid container>
@@ -96,6 +111,9 @@ const HomePage = () => {
           </Box>
         </Grid>
         <Grid container item xs={12}>
+          {suppliers.map(supplier => {
+          return (
+          <>
           <Grid container item md={4} xs={12} sx={{ padding: "2rem" }}>
             <Grid
               item
@@ -109,13 +127,13 @@ const HomePage = () => {
               <Box>
                 <img
                   alt="icon"
-                  src="/images/ad-poster.jpg"
+                  src={supplier.image}
                   width="300"
                   height="200"
                 />
               </Box>
               <Grid item xs={12} sx={{ paddingLeft: ".5rem" }}>
-                <Typography variant="h6">Service Provider</Typography>
+                <Typography variant="h6">{supplier.servicetitle}</Typography>
               </Grid>
               <Grid item xs={12} sx={{ paddingLeft: ".5rem" }}>
                 <Typography variant="body2">Food Type</Typography>
@@ -145,7 +163,7 @@ const HomePage = () => {
                     justifyContent: "center",
                   }}
                 >
-                  <Typography sx={{ fontSize: "14px" }}>35 MINS</Typography>
+                <Typography sx={{ fontSize: "14px" }}>35 MINS</Typography>
                 </Grid>
                 <Grid
                   item
@@ -178,9 +196,10 @@ const HomePage = () => {
               </Grid>
             </Grid>
           </Grid>
-
+          </>
+          )})}
           {/* --------------temp please delete me DikshantDon-------------------- */}
-          <Grid container item md={4} xs={12} sx={{ padding: "2rem" }}>
+          {/* <Grid container item md={4} xs={12} sx={{ padding: "2rem" }}>
             <Grid
               item
               sx={{
@@ -499,7 +518,7 @@ const HomePage = () => {
                 <Typography>Flat off on orders above</Typography>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </CommonContainer>

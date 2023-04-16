@@ -6,7 +6,11 @@ import SignupForm from "../components/user-interface/SignupForm";
 
 import Header from "./Header";
 import HomePage from "../components/user-interface/HomePage";
+import LocationDetails from "../components/supplier/LocationDetails";
+import PaymentPage from "../components/user-interface/PaymentPage";
+import PaymentSuccess from "../components/user-interface/PaymentSuccess";
 import SupplierMenu from "../components/supplier/SupplierMenu";
+
 
 const Content = () => {
   return (
@@ -32,6 +36,11 @@ const Content = () => {
       <Route exact path="/Login" element={<LoginForm />} />
       <Route exact path="/Header" element={<Header />} />
       {/* <Route exact path="/Supplier-Dashboard" element={<SupplierDashboard />} /> */}
+      <Route exact path="/Supplier-Details" element={<SupplierDetails />} />
+      <Route exact path="/Location-Details" element={<LocationDetails />} />
+      <Route exact path="/home" element={<HomePage />} />
+      <Route exact path="/payment" element={<PaymentPage/>}/>
+      <Route exact path="/paymentSuccess" element={<PaymentSuccess/>}/>
       {/* <Route exact path="/Dashboard" element={<DashBoard />} /> */}
       <Route exact path="/HomePage" element={<HomePage />} />
       <Route exact path="/supplier-menu" element={<SupplierMenu />} />
