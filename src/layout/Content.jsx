@@ -9,9 +9,10 @@ import HomePage from "../components/user-interface/HomePage";
 import LocationDetails from "../components/supplier/LocationDetails";
 import PaymentPage from "../components/user-interface/PaymentPage";
 import PaymentSuccess from "../components/user-interface/PaymentSuccess";
-import SupplierDetails from "../components/supplier/SupplierDetails"
-import SupplierMenu from "../components/supplier/SupplierMenu"
+import SupplierDetails from "../components/supplier/SupplierDetails";
+import SupplierMenu from "../components/supplier/SupplierMenu";
 import OrderSummary from "../components/user-interface/OrderSummary";
+import PickMeal from "../components/user-interface/PickMeal";
 
 const Content = () => {
   return (
@@ -39,13 +40,13 @@ const Content = () => {
       {/* <Route exact path="/Supplier-Dashboard" element={<SupplierDashboard />} /> */}
       <Route exact path="/Supplier-Details" element={<SupplierDetails />} />
       <Route exact path="/Location-Details" element={<LocationDetails />} />
-      <Route exact path="/home" element={<HomePage />} />
-      <Route exact path="/payment" element={<PaymentPage/>}/>
-      <Route exact path="/paymentSuccess" element={<PaymentSuccess/>}/>
+      <Route exact path="/payment" element={<PaymentPage />} />
+      <Route exact path="/paymentSuccess" element={<PaymentSuccess />} />
       {/* <Route exact path="/Dashboard" element={<DashBoard />} /> */}
       <Route exact path="/HomePage" element={<HomePage />} />
       <Route exact path="/supplier-menu" element={<SupplierMenu />} />
-      <Route exact path="/Order-Summary" element={<OrderSummary/>} />
+      <Route exact path="/meale" element={<PickMeal />} />
+      <Route exact path="/Order-Summary" element={<OrderSummary />} />
       {/* <Route
         exact
         path="/ServiceProviderPage"
