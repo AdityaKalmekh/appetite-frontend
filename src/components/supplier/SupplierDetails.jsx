@@ -46,7 +46,6 @@ const SupplierDetails = () => {
   const initialValues = {
     servicetitle: "",
     contact: "",
-    foodtype: "",
     openingTime : "",
     closingTime : "",
     image : "",
@@ -152,10 +151,8 @@ const SupplierDetails = () => {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  {/* <Grid item xs={6}>
                     <Autocomplete>
-                      {/* <Input value={value} type="text" onChange={handleInput}/>  */}
-                       {/* {status === 'OK' && data.map(sug => {return console.log(sug.description);})}   */}
                        <FormikController
                         control="text"
                         type="text"
@@ -173,26 +170,7 @@ const SupplierDetails = () => {
                         }
                       />  
                     </Autocomplete>   
-                  </Grid> 
-                  <Grid item xs={6}>
-                    <FormikController
-                      control="select"
-                      type="text"
-                      label="Food Type"
-                      name="foodtype"
-                      fullWidth
-                      options={FoodType}
-                      value={formik.values.foodtype}
-                      onChange={formik.handleChange}
-                      error={
-                        formik.touched.foodtype &&
-                        Boolean(formik.errors.foodtype)
-                      }
-                      helperText={
-                        formik.touched.foodtype && formik.errors.foodtype
-                      }
-                    />
-                  </Grid>
+                  </Grid>  */}
                   <Grid item xs={3}>
                     <FormikController
                       control="text"

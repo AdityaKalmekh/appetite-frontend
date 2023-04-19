@@ -9,9 +9,21 @@ import { CardMedia, Divider } from "@mui/material";
 import FormikController from "../../formik/FormikController";
 import { Form, Formik } from "formik";
 import useHttp from "../../hooks/useHttp";
+import { useState,useEffect } from "react";
 
 const SignupFormOTP = (values) => {
-  console.log({values});
+  const [otpTimer,setOtpTimer] = useState(60);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (otpTimer > 0){
+        setOtpTimer(seconds => seconds - 1);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [otpTimer]);
+
+  // console.log(values);
   const {sendRequest} = useHttp()
   const initialValues = {
     signupotp: "",
@@ -19,11 +31,12 @@ const SignupFormOTP = (values) => {
 
   setTimeout(function() {
     localStorage.removeItem('OTP')
-  },40000)
+  },60000)
   // let name = localStorage.getItem('OTP')
   // console.log(name);
   
   const addUserAcknowledgement = (id) =>{
+    console.log(id);
     if (id){
       console.log("Successfully register");
     }
@@ -158,7 +171,7 @@ const SignupFormOTP = (values) => {
                     name="phonenumber"
                     fullWidth
                     disabled
-                    value={formik.values.phonenumber}
+                    value={values.values.phonenumber}
                     onChange={formik.handleChange}
                     error={
                       formik.touched.phonenumber &&
@@ -187,6 +200,10 @@ const SignupFormOTP = (values) => {
                     }
                   />
                 </Grid>
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#729142", fontWeight: "700px" }}
+                >{`${otpTimer}SEC`}</Typography>
                 <Grid item md={12}>
                   <Button
                     type="submit"

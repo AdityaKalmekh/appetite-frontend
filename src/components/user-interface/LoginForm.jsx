@@ -44,8 +44,8 @@ const LoginForm = () => {
   }
 
   const onSubmit = (values, { resetForm }) => {
-    console.log({ values });
-    setValue(values);
+    console.log(values.phonenumber);
+    setValue(values.phonenumber);
     sendTaskRequest({
       url : "/verifyUser",
       method : "post",

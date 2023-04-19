@@ -9,11 +9,24 @@ import { CardMedia, Divider } from "@mui/material";
 import { Form, Formik } from "formik";
 import FormikController from "../../formik/FormikController";
 import { toast } from "react-toastify";
+import { useState,useEffect } from "react";
 
-const LoginFormOTP = () => {
+const LoginFormOTP = (phonenumber) => {
+  const [otpTimer,setOtpTimer] = useState(60);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (otpTimer > 0){
+        setOtpTimer(seconds => seconds - 1);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [otpTimer]); 
+
   const initialValues = {
     loginotp: "",
   };
+  
   const validationSchema = Yup.object({
     loginotp: Yup.string()
       .required()
@@ -24,7 +37,7 @@ const LoginFormOTP = () => {
 
   setTimeout(function() {
     localStorage.removeItem('OTP')
-  },40000)
+  },60000)
 
   const onSubmit = (values, { resetForm }) => {
     if (values.loginotp === parseInt(localStorage.getItem('OTP'))){
@@ -32,8 +45,9 @@ const LoginFormOTP = () => {
       toast.success('Login successfully')
     }else if (localStorage.getItem('OTP') === null){
       console.log("OTP expire");
+      toast.error('OTP expire')
     }else{
-      console.log('Wrong OTP');
+      toast.error('Invalid OTP');
     }
     resetForm();
   };
@@ -144,7 +158,7 @@ const LoginFormOTP = () => {
                     name="phonenumber"
                     disabled
                     fullWidth
-                    value={formik.values.phonenumber}
+                    value={phonenumber.phonenumber}
                     onChange={formik.handleChange}
                     error={
                       formik.touched.phonenumber &&
@@ -172,6 +186,10 @@ const LoginFormOTP = () => {
                     }
                   />
                 </Grid>
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#729142", fontWeight: "700px" }}
+                >{`${otpTimer}SEC`}</Typography>
                 <Grid item md={12}>
                   <Button
                     type="submit"
