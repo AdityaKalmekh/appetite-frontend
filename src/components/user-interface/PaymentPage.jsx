@@ -1,10 +1,12 @@
 import { Box, Button, Grid, imageListClasses, Typography,Input } from "@mui/material";
 import useHttp from "../../hooks/useHttp";
+import { useEffect } from "react";
 
 
-const PaymentPage = () => {
+const PaymentPage = ({data}) => {
+    // console.log({data});
     const {sendRequest : sendTaskRequest} = useHttp();
-
+    console.log(data.total);
     const response = (data) => {
         // console.log(data.order.amount);
         const options = {
@@ -36,19 +38,23 @@ const PaymentPage = () => {
         sendTaskRequest({
             url : "/payment",
             method : "post",
-            data : {amount : "500"}
+            data : {amount : JSON.stringify(data.total)}
         },response.bind(null))
     }
-    return (
-        <Button
-            variant="outlined"
-            onClick={() => { 
-                checkoutHandler()
-            }}
-        >
-        Submit
-        </Button>
-    )
+    checkoutHandler()
+    // useEffect(() =>{
+    //     checkoutHandler();
+    // },[checkoutHandler,sendTaskRequest,response])
+    // return (
+    //     <Button
+    //         variant="outlined"
+    //         onClick={() => { 
+    //             checkoutHandler()
+    //         }}
+    //     >
+    //     Submit
+    //     </Button>
+    // )
 }
 
 export default PaymentPage

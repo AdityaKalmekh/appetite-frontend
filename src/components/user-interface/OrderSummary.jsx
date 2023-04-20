@@ -4,14 +4,21 @@ import CommonContainer from "../../common/CommonContainer";
 import FormikController from "../../formik/FormikController";
 import { useState } from "react";
 import useHttp from "../../hooks/useHttp";
+import PaymentPage from "./PaymentPage";
 
-const OrderSummary = () => {
-    const initialValues = {
-        
+const OrderSummary = ({total}) => {
+    const initialValues = {}
+    const [payment,setPayment] = useState(false);
+
+    const paymentHandler = (props) => {
+      setPayment(true);
+      
     }
 
+    console.log(total);
     return (
         <CommonContainer sx={{ paddingX: "10rem" }}>
+          {payment ? <PaymentPage data = {total}/> :
           <Formik
             initialValues={initialValues}
             // validationSchema={validationSchema}
@@ -43,10 +50,11 @@ const OrderSummary = () => {
                             <FormikController
                                 control="text"
                                 type="text"
+                                disabled
                                 label="Quantity"
                                 name="foodtype"
                                 fullWidth
-                                value={formik.values.foodtype}
+                                value={total.quantity}
                                 onChange={formik.handleChange}
                                 error={
                                     formik.touched.foodtype &&
@@ -61,10 +69,11 @@ const OrderSummary = () => {
                             <FormikController
                             control="text"
                             type="text"
+                            disabled
                             label="Price"
                             name="address"
                             fullWidth
-                            value={formik.values.address}
+                            value={total.tiffinCharges}
                             onChange={formik.handleChange}
                             error={
                                 formik.touched.contact && Boolean(formik.errors.contact)
@@ -80,8 +89,9 @@ const OrderSummary = () => {
                             type="text"
                             label="Packaging Charge"
                             name="area"
+                            disabled
                             fullWidth
-                            value={formik.values.area}
+                            value={total.packagingCharges}
                             onChange={formik.handleChange}
                             error={
                                 formik.touched.servicetitle &&
@@ -97,10 +107,11 @@ const OrderSummary = () => {
                             <FormikController
                             control="text"
                             type="text"
+                            disabled
                             label="Total Amount"
                             name="area"
                             fullWidth
-                            value={formik.values.area}
+                            value={total.total}
                             onChange={formik.handleChange}
                             error={
                                 formik.touched.servicetitle &&
@@ -113,12 +124,12 @@ const OrderSummary = () => {
                             />
                         </Grid>
                     </Grid>
-                    <Button color="primary">Continue</Button>
+                    <Button onClick={paymentHandler} color="primary">Continue</Button>
                 </Grid>
                 </Box>
               </Form>
             )}
-          </Formik>
+          </Formik>}
         </CommonContainer>
       );
 }

@@ -12,7 +12,7 @@ import PaymentSuccess from "../components/user-interface/PaymentSuccess";
 import SupplierMenu from "../components/supplier/SupplierMenu";
 import LanadingPage from "../components/user-interface/LandingPage";
 import PickMeal from "../components/user-interface/PickMeal";
-
+import OrderSummary from "../components/user-interface/OrderSummary";
 
 const Content = () => {
   return (
@@ -42,8 +42,17 @@ const Content = () => {
       <Route exact path="/Location-Details" element={<LocationDetails />} />
       <Route exact path="/payment" element={<PaymentPage />} />
       <Route exact path="/paymentSuccess" element={<PaymentSuccess />} />
+      {/* <Route exact path="/Dashboard" element={<DashBoard />} /> */}
+      <Route exact path="/HomePage" element={<HomePage />} />
       <Route exact path="/supplier-menu" element={<SupplierMenu />} />
-      <Route exact path="/meal" element={<PickMeal />} />
+      <Route exact path="/meale" element={<PickMeal />} />
+      <Route exact path="/Order-Summary" element={<OrderSummary />} />
+      <Route exact path="/LandingPage" element={<LanadingPage />} />
+      {/* <Route
+        exact
+        path="/ServiceProviderPage"
+        element={<ServiceProviderPage />}
+      /> */}
     </Routes>
   );
 };

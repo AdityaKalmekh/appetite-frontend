@@ -14,8 +14,9 @@ const SupplierDetails = () => {
   const {sendRequest : sendTaskRequest} = useHttp()
   const [image,setImage] = useState()
   const [loc,setLoc]= useState()
+  console.log("api",process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 
-  const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+  const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
   })
   console.log(isLoaded);
@@ -151,7 +152,7 @@ const SupplierDetails = () => {
                       }
                     />
                   </Grid>
-                  {/* <Grid item xs={6}>
+                  <Grid item xs={6}>
                     <Autocomplete>
                        <FormikController
                         control="text"
@@ -170,7 +171,7 @@ const SupplierDetails = () => {
                         }
                       />  
                     </Autocomplete>   
-                  </Grid>  */}
+                  </Grid> 
                   <Grid item xs={3}>
                     <FormikController
                       control="text"
