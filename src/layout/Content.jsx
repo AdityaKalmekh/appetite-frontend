@@ -13,6 +13,7 @@ import SupplierMenu from "../components/supplier/SupplierMenu";
 import LanadingPage from "../components/user-interface/LandingPage";
 import PickMeal from "../components/user-interface/PickMeal";
 import OrderSummary from "../components/user-interface/OrderSummary";
+import SupplierDashBoard from "../components/supplier/SupplierDashBoard";
 
 const Content = () => {
   return (
@@ -48,6 +49,7 @@ const Content = () => {
       <Route exact path="/meale" element={<PickMeal />} />
       <Route exact path="/Order-Summary" element={<OrderSummary />} />
       <Route exact path="/LandingPage" element={<LanadingPage />} />
+      <Route exact path="/supplier-dashpoard" element={<SupplierDashBoard />} />
       {/* <Route
         exact
         path="/ServiceProviderPage"

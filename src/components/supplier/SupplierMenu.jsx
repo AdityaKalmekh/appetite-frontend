@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { css } from "@emotion/react";
 import EditIcon from "@mui/icons-material/Edit";
@@ -21,7 +21,7 @@ const initialValues = {
 };
 
 const SupplierMenu = () => {
-  const {sendRequest} = useHttp();
+  const { sendRequest } = useHttp();
   const [menuItem, setMenuItem] = useState([]);
   const [currentRow, setCurrentRow] = useState(initialValues);
   const [open, setOpen] = useState(false);
@@ -40,45 +40,50 @@ const SupplierMenu = () => {
   };
 
   const afterEdition = (data) => {
-      const indexEdit = menuItem.findIndex(menu => menu._id === data._id)
-      menuItem[indexEdit] = data
-      setMenuItem([...menuItem])
-  }
+    const indexEdit = menuItem.findIndex((menu) => menu._id === data._id);
+    menuItem[indexEdit] = data;
+    setMenuItem([...menuItem]);
+  };
 
   const afterNewMenu = (data) => {
     setMenuItem((prev) => prev.concat(data));
-  }
+  };
 
   const handleEditClick = (row) => (event) => {
     event.stopPropagation();
     setCurrentRow({
-      _id : row._id ? row._id : "",
-      foodtypes : row.foodtypes ? row.foodtypes : "",
-      foodoption : row.foodoption ? row.foodoption : "",
-      tifinprice : row.tifinprice ? row.tifinprice : "",
-      packagingcharge : row.packagingcharge ? row.packagingcharge : "",
-      foodtime : row.foodtime ? row.foodtime : "",
-      tifindescription : row.tifindescription ? row.tifindescription : "",
-    })
+      _id: row._id ? row._id : "",
+      foodtypes: row.foodtypes ? row.foodtypes : "",
+      foodoption: row.foodoption ? row.foodoption : "",
+      tifinprice: row.tifinprice ? row.tifinprice : "",
+      packagingcharge: row.packagingcharge ? row.packagingcharge : "",
+      foodtime: row.foodtime ? row.foodtime : "",
+      tifindescription: row.tifindescription ? row.tifindescription : "",
+    });
     console.log(row);
     setOpen(true);
   };
 
-  const deleteDataResponse = (id,acknowledgement) => {
-    if (acknowledgement){
-      setConfirmDialog({isOpen:false})
-      const indexDelete = menuItem.findIndex(menu => menu._id === id)
-      setMenuItem(prev => prev.filter((_,index) => index !== indexDelete))
+  const deleteDataResponse = (id, acknowledgement) => {
+    if (acknowledgement) {
+      setConfirmDialog({ isOpen: false });
+      const indexDelete = menuItem.findIndex((menu) => menu._id === id);
+      setMenuItem((prev) => prev.filter((_, index) => index !== indexDelete));
     }
-  }
+  };
 
   const onDelete = (row) => {
-      sendRequest({url:"/deleteMenu",method:"delete",id:row._id},deleteDataResponse.bind(null,row._id))
+    sendRequest(
+      { url: "/deleteMenu", method: "delete", id: row._id },
+      deleteDataResponse.bind(null, row._id)
+    );
   };
 
   useEffect(() => {
-    sendRequest({url:"/getMenu",method:'get'},(data) =>{setMenuItem(data)})
-  },[sendRequest])
+    sendRequest({ url: "/getMenu", method: "get" }, (data) => {
+      setMenuItem(data);
+    });
+  }, [sendRequest]);
 
   const handleDeleteClick = (row) => (event) => {
     event.stopPropagation();
@@ -163,7 +168,11 @@ const SupplierMenu = () => {
         <div style={{ height: 475, width: "100%" }}>
           <DataGrid
             editMode="row"
-            rows={menuItem.map((item, index) => ({ ...item,"Subtotal":item.tifinprice+item.packagingcharge,id: index + 1 }))}
+            rows={menuItem.map((item, index) => ({
+              ...item,
+              Subtotal: item.tifinprice + item.packagingcharge,
+              id: index + 1,
+            }))}
             columns={columns}
             css={css`
               height: calc(100vh - 1500px - 30px) !important;
