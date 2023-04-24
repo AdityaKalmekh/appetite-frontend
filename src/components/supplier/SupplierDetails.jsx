@@ -6,7 +6,7 @@ import UploadImage from "../../common/UploadImage";
 import FormikController from "../../formik/FormikController";
 import {useLoadScript,Autocomplete} from '@react-google-maps/api';
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useHttp from "../../hooks/useHttp";
 import usePlacesAutocomplete,{getGeocode,getLatLng} from "use-places-autocomplete";
 
@@ -14,20 +14,29 @@ const SupplierDetails = () => {
   const {sendRequest : sendTaskRequest} = useHttp()
   const [image,setImage] = useState()
   const [loc,setLoc]= useState()
-  console.log("api",process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
+  const [currentValues,setCurrentValues] = useState({
+    closingTime : "",
+    servicetitle: "",
+    contact: "",
+    openingTime : "",
+    image : "",
+    supplier_id : "",
+    _id : ""
+  });
+// console.log("api",process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 
-  const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
-  })
-  console.log(isLoaded);
+// const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+//   libraries: ['places'],
+// })
+// console.log(isLoaded);
 
-  const {value,setValue,suggestions:{status,data}} = usePlacesAutocomplete();
-  
-  if (!isLoaded){
-    // toast.error("google map not loded")
-    // console.log("google map not loded");
-    return <div>Loding...</div>
-  }
+// const {value,setValue,suggestions:{status,data}} = usePlacesAutocomplete();
+
+// if (!isLoaded){
+//   // toast.error("google map not loded")
+//     // console.log("google map not loded");
+//     return <div>Loding...</div>
+//   }
   // console.log(props.encodedimg);
   const FoodType = [
     {
@@ -43,14 +52,18 @@ const SupplierDetails = () => {
       label: "Egg",
     },
   ];
-  
-  const initialValues = {
-    servicetitle: "",
-    contact: "",
-    openingTime : "",
-    closingTime : "",
-    image : "",
-  };
+
+  useEffect(()=>{
+    sendTaskRequest({url : "/getSupplierDetails/640de28bb230f3f9cdcaacd0",method:"get"},(data) => (setCurrentValues(currentValues.servicetitle=data.servicetitle,
+                                                                                                                    currentValues.closingTime=data.closingTime,
+                                                                                                                    currentValues.contact=data.contact,
+                                                                                                                    currentValues.openingTime=data.openingTime,
+                                                                                                                    currentValues.image=data.image,
+                                                                                                                  )));
+  },[sendTaskRequest,currentValues])
+
+
+  console.log(currentValues);
 
   const validationSchema = Yup.object({
     servicetitle: Yup.string().required("Required"),
@@ -72,25 +85,26 @@ const SupplierDetails = () => {
   }
 
   const onSubmit = (value) => {
-    sendTaskRequest({
-      url : "/addSupplierDetail",
-      method : 'post',
-      data : {...value,image}
-    },addAcknowledgement.bind(null))
+    console.log(value);
+    // sendTaskRequest({
+    //   url : "/addSupplierDetail",
+    //   method : 'post',
+    //   data : {...value,image}
+    // },addAcknowledgement.bind(null))  
   };
 
   const encodedImage = (value) => {
     setImage(value);
   }
 
-  const handleInput = (e) =>{
-    setValue(e.target.value);
-  }
+  // const handleInput = (e) =>{
+  //   setValue(e.target.value);
+  // }
 
   return (
     <CommonContainer sx={{ paddingX: "5rem" }}>
       <Formik
-        initialValues={initialValues}
+        initialValues={currentValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
@@ -152,32 +166,12 @@ const SupplierDetails = () => {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
-                    <Autocomplete>
-                       <FormikController
-                        control="text"
-                        type="text"
-                        label="Location"
-                        name="location"
-                        fullWidth
-                        value={formik.values.location}
-                        onChange={formik.handleChange}
-                        error={
-                          formik.touched.location &&
-                          Boolean(formik.errors.location)
-                        }
-                        helperText={
-                          formik.touched.location && formik.errors.location
-                        }
-                      />  
-                    </Autocomplete>   
-                  </Grid> 
                   <Grid item xs={3}>
                     <FormikController
                       control="text"
                       type="text"
                       label="Opening Time"
-                      name="timing"
+                      name="openingTime"
                       fullWidth
                       value={formik.values.openingTime}
                       onChange={formik.handleChange}
@@ -195,7 +189,7 @@ const SupplierDetails = () => {
                       control="text"
                       type="text"
                       label="Closing Time"
-                      name="timing"
+                      name="closingTime"
                       fullWidth
                       value={formik.values.closingTime}
                       onChange={formik.handleChange}
@@ -220,8 +214,7 @@ const SupplierDetails = () => {
                   <Grid item xs={12}>
                     <Button
                       variant="outlined"
-                      onClick={(e) => {
-                        console.log(formik.values);
+                      onClick={() => {
                         onSubmit(formik.values);
                       }}
                     >

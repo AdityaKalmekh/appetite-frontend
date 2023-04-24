@@ -25,6 +25,22 @@ const HomePage = () => {
   useEffect(() => {
     fetchTask({url:"/getSupplierDetails",method:"get"},loadData)
   },[fetchTask])
+
+  useEffect(() => {
+    if (navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          fetchTask({url:`/getByCurrentLocation/${position.coords.latitude}/${position.coords.longitude}`,
+                    method:"get"},(data) => console.log(data))
+        },
+        error => {
+          console.error(error);
+        }
+      );
+    }else{
+      console.error('Geolocation is not supported by this browser.');
+    }
+  },[])
   
   return (
     <CommonContainer>

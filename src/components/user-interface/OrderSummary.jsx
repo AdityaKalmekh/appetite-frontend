@@ -6,19 +6,17 @@ import { useState } from "react";
 import useHttp from "../../hooks/useHttp";
 import PaymentPage from "./PaymentPage";
 
-const OrderSummary = ({total}) => {
+const OrderSummary = ({total,checkoutHandler}) => {
     const initialValues = {}
     const [payment,setPayment] = useState(false);
 
-    const paymentHandler = (props) => {
+    const paymentHandler = () => {
       setPayment(true);
-      
     }
 
-    console.log(total);
     return (
         <CommonContainer sx={{ paddingX: "10rem" }}>
-          {payment ? <PaymentPage data = {total}/> :
+          {payment ? <PaymentPage data = {total} checkoutHandler={checkoutHandler}/> :
           <Formik
             initialValues={initialValues}
             // validationSchema={validationSchema}

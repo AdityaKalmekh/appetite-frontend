@@ -10,9 +10,11 @@ import { Form, Formik } from "formik";
 import FormikController from "../../formik/FormikController";
 import { toast } from "react-toastify";
 import { useState,useEffect } from "react";
+import HomePage from "../user-interface/HomePage"
 
 const LoginFormOTP = (phonenumber) => {
   const [otpTimer,setOtpTimer] = useState(60);
+  const[homePage,setHomePage] = useState(false);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,8 +43,10 @@ const LoginFormOTP = (phonenumber) => {
 
   const onSubmit = (values, { resetForm }) => {
     if (values.loginotp === parseInt(localStorage.getItem('OTP'))){
+      console.log(localStorage.getItem("id"));
       console.log("loggin successfully");
       toast.success('Login successfully')
+      setHomePage(true);
     }else if (localStorage.getItem('OTP') === null){
       console.log("OTP expire");
       toast.error('OTP expire')
@@ -53,6 +57,8 @@ const LoginFormOTP = (phonenumber) => {
   };
 
   return (
+    <>
+    {homePage === false ? (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
@@ -217,7 +223,9 @@ const LoginFormOTP = (phonenumber) => {
           </Grid>
         </Form>
       )}
-    </Formik>
+    </Formik>):( 
+    <HomePage/>)}
+  </>
   );
 };
 

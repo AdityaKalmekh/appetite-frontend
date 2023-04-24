@@ -8,11 +8,22 @@ import {
 import SupplierDashboard from "../components/supplier/SupplierDashBoard";
 import { UseLayoutContext } from "../context";
 import Content from "../layout/Content";
+import LoginForm from "../components/user-interface/LoginForm";
 
 const AppLayout = () => {
+  const { host } = window.location;
+  console.log({ local: host });
+
+
   const { isDrawerOpened } = UseLayoutContext();
+
   return (
     <>
+    {host === 'localhost:3000' ? (<div>
+      <Content />
+      </div>
+      ):(
+        <div>
       <SupplierDashboard />
       <Box
         sx={{
@@ -24,6 +35,8 @@ const AppLayout = () => {
       >
         <Content />
       </Box>
+      </div>
+      )} 
     </>
   );
 };

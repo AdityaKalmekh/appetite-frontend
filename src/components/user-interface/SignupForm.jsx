@@ -22,6 +22,7 @@ const SignupForm = () => {
     phonenumber: "",
     username: "",
     email: "",
+    role : "user"
   };
   const validationSchema = Yup.object({
     phonenumber: Yup.string()
@@ -38,8 +39,8 @@ const SignupForm = () => {
   });
 
   const loadNewData = (response) => {
-    console.log({response});
-    if (response === true){
+    console.log(response);
+    if (!response){
       toast.error("User already exists")
     }else{
       setOpenSignupOtp(true);

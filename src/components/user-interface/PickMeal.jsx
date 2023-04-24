@@ -76,9 +76,7 @@ const PickMeal = (supplierId) => {
                         packagingcharge += (i.packagingcharge) * cart[i._id];
                         quantity += cart[i._id]});
     setCartBilling({total:total,tiffinCharges:tiffinCharge,packagingCharges:packagingcharge,quantity:quantity})
-    // menu.forEach((i) => {setTotal(total += (i.packagingcharge+i.tifinprice) * cart[i._id])});
-    setOrderHandler(true)
-    // menu.forEach((i) => {setCartBilling(prev => ({...prev , total, += (i.packagingcharge+i.tifinprice) * cart[i._id]}))});
+    setOrderHandler(true);
   }
   console.log(cartBilling);
 

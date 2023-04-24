@@ -31,6 +31,9 @@ const PaymentPage = ({data}) => {
             }
         };
         const razor = new window.Razorpay(options);
+        razor.on("payment.success", function (response) {
+            checkoutHandler(); // Call the checkoutHandler prop on success
+        });
         razor.open();
     }
 

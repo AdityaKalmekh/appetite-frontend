@@ -2,21 +2,78 @@ import { Box, Button, Grid, imageListClasses, Typography,Input } from "@mui/mate
 import { Form, Formik } from "formik";
 import CommonContainer from "../../common/CommonContainer";
 import FormikController from "../../formik/FormikController";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useHttp from "../../hooks/useHttp";
-
+import {Autocomplete} from '@react-google-maps/api';
+import { CurrencyRuble } from "@mui/icons-material";
 
 const LocationDetails = () => {
+    const {sendRequest} = useHttp();
     const initialValues = {
-
+        blockNo : "",
+        streetName : "",
+        area : "",
+        city : "",
+        state : "",
+        pincode : "",
+        location : [],
     }
+    const [currentValues,setCurrentValues] = useState({
+        blockNo : "",
+        streetName : "",
+        area : "",
+        city : "",
+        state : "",
+        pincode : "",
+        location : [],
+    })
+
+    useEffect(() =>{
+        sendRequest({url : "/getLocation/640de28bb230f3f9cdcaacd0",method:"get"},(data) => (setCurrentValues(currentValues.city = data.city,
+                                                                                                            currentValues.state = data.state,
+                                                                                                            currentValues.streetName = data.streetName,
+                                                                                                            currentValues.blockNo = data.blockNo,
+                                                                                                            currentValues.pincode = data.pincode,
+                                                                                                            currentValues.area = data.area)));
+    },[sendRequest,currentValues])
+
+    var geoCoder = new window.google.maps.Geocoder()
+
+    const onSubmit = (values) => {
+        console.log(values.location);
+        var address = `${values.blockNo} ${values.streetName} ${values.area} ${values.city} ${values.state}`;      
+        console.log(address.length);
+        let location = []
+        if (address !== " "){
+            geoCoder.geocode({address:address}, function(result,status) {
+                if (status === window.google.maps.GeocoderStatus.OK){
+                    var latLng = result[0].geometry.location;
+                    location.push(latLng.lng());
+                    location.push(latLng.lat());
+                    callback(location);
+                }else{
+                    console.log("Geocode was not successful for the following reason: " + status);
+                    return;
+                }
+            })
+        }else{
+            console.log("hi");
+        }
+        function callback (location){
+            sendRequest({url : "/addLocation",
+                        method : "post",
+                        data : {...values,location}})
+        }
+    }
+
 
     return (
         <CommonContainer sx={{ paddingX: "5rem" }}>
           <Formik
-            initialValues={initialValues}
+            
+            initialValues={currentValues}
             // validationSchema={validationSchema}
-            // onSubmit={onSubmit}
+            onSubmit={onSubmit}
           >
             {(formik) => (
               <Form>
@@ -45,9 +102,9 @@ const LocationDetails = () => {
                                 control="text"
                                 type="text"
                                 label="Building/House No"
-                                name="foodtype"
+                                name="blockNo"
                                 fullWidth
-                                value={formik.values.foodtype}
+                                value={formik.values.blockNo}
                                 onChange={formik.handleChange}
                                 error={
                                     formik.touched.foodtype &&
@@ -63,9 +120,9 @@ const LocationDetails = () => {
                             control="text"
                             type="text"
                             label="Street Address"
-                            name="address"
+                            name="streetName"
                             fullWidth
-                            value={formik.values.address}
+                            value={formik.values.streetName}
                             onChange={formik.handleChange}
                             error={
                                 formik.touched.contact && Boolean(formik.errors.contact)
@@ -101,7 +158,7 @@ const LocationDetails = () => {
                             label="City"
                             name="city"
                             fullWidth
-                            value={formik.values.area}
+                            value={formik.values.city}
                             onChange={formik.handleChange}
                             error={
                                 formik.touched.servicetitle &&
@@ -120,7 +177,7 @@ const LocationDetails = () => {
                             label="State"
                             name="state"
                             fullWidth
-                            value={formik.values.area}
+                            value={formik.values.state}
                             onChange={formik.handleChange}
                             error={
                                 formik.touched.servicetitle &&
@@ -135,11 +192,11 @@ const LocationDetails = () => {
                         <Grid item xs={6}>
                             <FormikController
                                 control="text"
-                                type="text"
+                                type="number"
                                 label="Pincode"
-                                name="foodtype"
+                                name="pincode"
                                 fullWidth
-                                value={formik.values.foodtype}
+                                value={formik.values.pincode}
                                 onChange={formik.handleChange}
                                 error={
                                     formik.touched.foodtype &&
@@ -150,13 +207,36 @@ const LocationDetails = () => {
                                 }
                             />
                         </Grid>
+                        <Grid item xs={6}>
+                            <Autocomplete
+                                freeSolo
+                                disableClearable
+                                options={[]}
+                                getOptionLabel={(option) => option.description}
+                                onPlaceSelected={(place)=> {console.log(place.formatted_address);}}
+                            >
+                                <FormikController
+                                    control="text"
+                                    type="text"
+                                    label="Location"
+                                    name="location"
+                                    fullWidth
+                                    value={formik.values.location}
+                                    onChange={formik.handleChange}
+                                    error={
+                                    formik.touched.location &&
+                                    Boolean(formik.errors.location)
+                                    }
+                                    helperText={
+                                    formik.touched.location && formik.errors.location
+                                    }
+                                />  
+                            </Autocomplete>   
+                        </Grid> 
                         <Grid item xs={12}>
                             <Button
                                 variant="outlined"
-                                onClick={(e) => {
-                                    console.log(formik.values);
-                                    // onSubmit(formik.values);
-                                }}
+                                onClick={() => {onSubmit(formik.values)}}
                             >
                             Submit
                             </Button>

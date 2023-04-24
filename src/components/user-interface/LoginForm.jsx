@@ -16,12 +16,13 @@ import useHttp from "../../hooks/useHttp";
 const LoginForm = () => {
   const [openLoginOtp, setOpenLoginOtp] = useState(false);
   const {sendRequest:sendTaskRequest} = useHttp()
-  console.log({ openLoginOtp });
+  // console.log({ openLoginOtp });
   const [value, setValue] = useState();
 
   const initialValues = {
     phonenumber: "",
   };
+
   const validationSchema = Yup.object({
     phonenumber: Yup.string()
       .matches(
@@ -34,17 +35,22 @@ const LoginForm = () => {
       .required("Required"),
   });
 
+  console.log(sessionStorage);
+
   const response = (result) =>{
+    console.log(result);
     if (!result){
       toast.error("Not register yet")
     }else{
-      localStorage.setItem("OTP",result)
+      console.log(result);
+      localStorage.setItem("OTP",result[0]);
+      localStorage.setItem("id",result[1]);
+      localStorage.setItem("role",result[2]);
       setOpenLoginOtp(true);
     }
   }
 
   const onSubmit = (values, { resetForm }) => {
-    console.log(values.phonenumber);
     setValue(values.phonenumber);
     sendTaskRequest({
       url : "/verifyUser",
