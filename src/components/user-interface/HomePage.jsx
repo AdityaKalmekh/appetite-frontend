@@ -21,17 +21,12 @@ const HomePage = () => {
     setSuppliers(data)
   }
 
-  // console.log(supplier[0].image);
-  useEffect(() => {
-    fetchTask({url:"/getSupplierDetails",method:"get"},loadData)
-  },[fetchTask])
-
   useEffect(() => {
     if (navigator.geolocation){
       navigator.geolocation.getCurrentPosition(
         position => {
-          fetchTask({url:`/getByCurrentLocation/${position.coords.latitude}/${position.coords.longitude}`,
-                    method:"get"},(data) => console.log(data))
+          fetchTask({url:`/getByCurrentLocation/${position.coords.longitude}/${position.coords.latitude}`,
+                    method:"get"},(data) => setSuppliers(data))
         },
         error => {
           console.error(error);
@@ -40,7 +35,12 @@ const HomePage = () => {
     }else{
       console.error('Geolocation is not supported by this browser.');
     }
-  },[])
+  },[fetchTask])
+  
+  if (suppliers.length <= 0){
+    console.log("hi");
+    fetchTask({url:"/getSupplierDetails",method:"get"},loadData);
+  }  
   
   return (
     <CommonContainer>
@@ -70,7 +70,7 @@ const HomePage = () => {
             >
               <img
                 alt="icon"
-                src="/images/ad-poster.jpg"
+                src="/images/add1.jpg"
                 width="250"
                 height="250"
                 style={{
@@ -92,7 +92,7 @@ const HomePage = () => {
             >
               <img
                 alt="icon"
-                src="/images/ad-poster.jpg"
+                src="/images/add1.jpg"
                 width="250"
                 height="250"
               />
@@ -108,7 +108,7 @@ const HomePage = () => {
             >
               <img
                 alt="icon"
-                src="/images/ad-poster.jpg"
+                src="/images/add1.jpg"
                 width="250"
                 height="250"
               />
@@ -124,7 +124,7 @@ const HomePage = () => {
             >
               <img
                 alt="icon"
-                src="/images/ad-poster.jpg"
+                src="/images/add1.jpg"
                 width="250"
                 height="250"
               />
@@ -216,7 +216,13 @@ const HomePage = () => {
                 <Typography sx={{ color: "#04D010" }}>
                   Flat off on orders above
                 </Typography>
-                <Button onClick={() => {setMenu(false);setSupplierId(supplier.supplier_id)}}>Order</Button>
+              </Grid>
+              <Grid item xs={12}>
+              <Button fullWidth sx={{borderRadius:'0rem',backgroundColor:'#04D010', "&:hover": {
+                        backgroundColor: "#04D010",
+                        color: "#063340",
+                      } }} variant="contained" onClick={() => {setMenu(false);setSupplierId(supplier.supplier_id)}}>Order</Button>
+
               </Grid>
             </Grid>
           </Grid>

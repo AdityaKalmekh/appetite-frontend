@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import useHttp from "../../hooks/useHttp";
 import {Autocomplete} from '@react-google-maps/api';
 import { CurrencyRuble } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const LocationDetails = () => {
     const {sendRequest} = useHttp();
@@ -26,6 +27,8 @@ const LocationDetails = () => {
         state : "",
         pincode : "",
         location : [],
+        _id : "",
+        supplier_id : ""
     })
 
     useEffect(() =>{
@@ -34,15 +37,23 @@ const LocationDetails = () => {
                                                                                                             currentValues.streetName = data.streetName,
                                                                                                             currentValues.blockNo = data.blockNo,
                                                                                                             currentValues.pincode = data.pincode,
-                                                                                                            currentValues.area = data.area)));
+                                                                                                            currentValues.area = data.area,
+                                                                                                            currentValues._id = data._id,
+                                                                                                            currentValues.supplier_id = data.supplier_id)));
     },[sendRequest,currentValues])
 
     var geoCoder = new window.google.maps.Geocoder()
 
+    const updateAcknowledgement = (response) => {
+        if (response){
+            toast("Updated Successfully");
+        }   
+    }
+
     const onSubmit = (values) => {
-        console.log(values.location);
+        console.log(values);
         var address = `${values.blockNo} ${values.streetName} ${values.area} ${values.city} ${values.state}`;      
-        console.log(address.length);
+        // console.log(address.length);
         let location = []
         if (address !== " "){
             geoCoder.geocode({address:address}, function(result,status) {
@@ -60,15 +71,23 @@ const LocationDetails = () => {
             console.log("hi");
         }
         function callback (location){
-            sendRequest({url : "/addLocation",
+            if (values._id !== ""){
+                sendRequest({
+                    url : "/updateLocation",
+                    method : "put",
+                    data : {...values,location}
+                },updateAcknowledgement.bind(null))
+            }else{
+                sendRequest({url : "/addLocation",
                         method : "post",
                         data : {...values,location}})
+            }
         }
     }
 
 
     return (
-        <CommonContainer sx={{ paddingX: "5rem" }}>
+        <Box sx={{ paddingX: "5rem" }}>
           <Formik
             
             initialValues={currentValues}
@@ -247,7 +266,7 @@ const LocationDetails = () => {
               </Form>
             )}
           </Formik>
-        </CommonContainer>
+        </Box >
       );
 }
 

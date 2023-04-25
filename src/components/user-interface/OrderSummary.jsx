@@ -14,6 +14,8 @@ const OrderSummary = ({total,checkoutHandler}) => {
       setPayment(true);
     }
 
+    
+
     return (
         <CommonContainer sx={{ paddingX: "10rem" }}>
           {payment ? <PaymentPage data = {total} checkoutHandler={checkoutHandler}/> :

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import useHttp from "../../hooks/useHttp";
+import { toast } from "react-toastify";
 
 const AddItem = ({ handleClose, currentRow, afterEdition, afterNewMenu }) => {
   const {sendRequest} = useHttp();
@@ -53,12 +54,14 @@ const AddItem = ({ handleClose, currentRow, afterEdition, afterNewMenu }) => {
 
   const addDataResponse = (values,id) => {
     if (id){
+      toast("Added Successfully");
       afterNewMenu({...values,_id:id})
     }
   }
 
   const editDataResponse = (values,acknowledgement) => {
     if (acknowledgement){
+      toast("Updated Successfully");
       afterEdition(values);
     }
   }

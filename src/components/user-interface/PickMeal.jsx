@@ -10,27 +10,25 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import useHttp from "../../hooks/useHttp";
 import OrderSummary from "./OrderSummary";
+import PaymentSuccess from "./PaymentSuccess";
+
+const addOrder = (sId) => {
+  console.log({sId});
+  // sendRequest({url : "/addOrder", method : 'post',data : {}},(data) => console.log(data))
+}
+export {addOrder}
 
 const PickMeal = (supplierId) => {
-  const data = [
-    {
-      item: "SmallMeal/Thali",
-      id: 1,
-    },
-    {
-      item: "MediumMeal/Thali",
-      id: 2,
-    },
-    {
-      item: "LargeMeal/Thali",
-      id: 3,
-    },
-  ];
-  const [cartBilling ,setCartBilling] = useState() ;
+  const [cartBilling ,setCartBilling] = useState({
+        total : 0,
+        tiffinCharges : 0,
+        packagingCharges : 0,
+        quantity : 0
+  });
   const { sendRequest } = useHttp();
   const [menu,setMenu] = useState([]);
   // const [total,setTotal] = useState(0);
@@ -51,6 +49,9 @@ const PickMeal = (supplierId) => {
   const [cart, setCart] = useState({});
   console.log(cart);
 
+  addOrder(supplierId);
+  
+  addOrder(sendRequest,supplierId)
   // console.log(total);
   const handleAddToCart = (productId, quantity) => {
     if (cart.hasOwnProperty(productId)) {
@@ -66,6 +67,12 @@ const PickMeal = (supplierId) => {
     }
   };
 
+  // const addOrder = useCallback(async () => {
+  //       console.log("hii");
+  // },[addOrder])
+
+  console.log(localStorage.getItem('id'))
+
   const checkoutHandler = () => {
     let total = 0;
     let tiffinCharge = 0;
@@ -77,15 +84,15 @@ const PickMeal = (supplierId) => {
                         quantity += cart[i._id]});
     setCartBilling({total:total,tiffinCharges:tiffinCharge,packagingCharges:packagingcharge,quantity:quantity})
     setOrderHandler(true);
-  }
-  console.log(cartBilling);
+  };
 
+  console.log(cartBilling.total);
   return (
     <>
-    {orderHandler ?
+    {orderHandler ?(
         <OrderSummary 
           total={cartBilling}
-        />:
+        />):
       <Grid
         container
         sx={{ display: "flex", justifyContent: "center", paddingTop: "2rem" }}
@@ -128,7 +135,7 @@ const PickMeal = (supplierId) => {
             <FormControlLabel
               sx={{ marginLeft: "0rem" }}
               value="start"
-              control={<Switch defaultChecked color="primary" />}
+              control={<Switch defaultChecked color="primary" sx={{color:'#04D010 !important'}} />}
               label="Veg Only"
               labelPlacement="start"
             />
@@ -175,7 +182,7 @@ const PickMeal = (supplierId) => {
                           component="label"
                           onClick={() => handleRemoveToCart(d._id, 1)}
                         >
-                          <RemoveIcon />
+                          <RemoveIcon sx={{color:'#04D010'}} />
                         </IconButton>
 
                         <Typography variant="body1">{cart[d._id]}</Typography>
@@ -184,7 +191,7 @@ const PickMeal = (supplierId) => {
                           color="primary"
                           onClick={() => handleAddToCart(d._id, 1)}
                         >
-                          <AddIcon />
+                          <AddIcon sx={{color:'#04D010'}} />
                         </IconButton>
                       </Box>
                     </Grid>
@@ -197,11 +204,14 @@ const PickMeal = (supplierId) => {
           <Grid
             container
             item
-            xs={10}
+            xs={12}
             sx={{ display: "flex", justifyContent: "center" }}
           >
-            <Grid item xs={12}>
-              <Button onClick={checkoutHandler} fullWidth variant="contained">
+            <Grid container item xs={12}>
+              <Button onClick={checkoutHandler} fullWidth variant="contained" sx={{borderRadius:'0rem',backgroundColor:'#04D010', "&:hover": {
+                        backgroundColor: "#04D010",
+                        color: "#063340",
+                      }}}>
                 Checkout
               </Button>
             </Grid>

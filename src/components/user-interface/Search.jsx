@@ -3,13 +3,14 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import GpsFixedOutlinedIcon from "@mui/icons-material/GpsFixedOutlined";
 import { Box, Typography } from "@mui/material";
+import {Autocomplete} from '@react-google-maps/api';
 
 export default function SearchBox() {
   return (
     <Box
       component="form"
       sx={{
-        border: "1px solid black",
+        // border: "1px solid black",
         borderRightColor: "#04D010",
         display: "flex",
         alignItems: "center",
@@ -18,14 +19,16 @@ export default function SearchBox() {
         width: { md: 550, xs: "auto" },
       }}
     >
-      <InputBase
-        placeholder="Enter your delivery location"
-        sx={{ ml: 1, flex: 1 }}
-      />
+      <Autocomplete>
+        <InputBase
+          placeholder="Enter your delivery location"
+          sx={{ ml: 1, flex: 1 }}
+        />
+      </Autocomplete> 
       <IconButton type="button">
         <GpsFixedOutlinedIcon fontSize="small" sx={{ mr: ".5rem" }} />
         <Typography>Locate Me</Typography>
-      </IconButton>
+      </IconButton>  
       <Box
         sx={{
           border: "1px solid #04D010",

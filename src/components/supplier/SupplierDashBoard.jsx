@@ -146,7 +146,7 @@ export default function SupplierDashboard() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={isDrawerOpened}>
+      <AppBar position="fixed" open={isDrawerOpened} sx={{backgroundColor:'#04D010'}}>
         <Toolbar>
           <IconButton
             color="inherit"

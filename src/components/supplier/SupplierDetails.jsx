@@ -59,7 +59,8 @@ const SupplierDetails = () => {
                                                                                                                     currentValues.contact=data.contact,
                                                                                                                     currentValues.openingTime=data.openingTime,
                                                                                                                     currentValues.image=data.image,
-                                                                                                                  )));
+                                                                                                                    currentValues.supplier_id=data.supplier_id,
+                                                                                                                    currentValues._id = data._id)));
   },[sendTaskRequest,currentValues])
 
 
@@ -84,7 +85,20 @@ const SupplierDetails = () => {
     console.log(acknowledgement);
   }
 
+  const updateAcknowledgement = (response) => {
+    if (response){
+      toast.success("Updated Successfully");
+    }
+  }
+
   const onSubmit = (value) => {
+    if (value._id !== ""){
+      sendTaskRequest({
+        url : "/updateSupplierDetails",
+        method : "put",
+        data : value
+      },updateAcknowledgement.bind(null))
+    }
     console.log(value);
     // sendTaskRequest({
     //   url : "/addSupplierDetail",
@@ -102,7 +116,7 @@ const SupplierDetails = () => {
   // }
 
   return (
-    <CommonContainer sx={{ paddingX: "5rem" }}>
+    <Box  sx={{paddingX:'2rem'}}>
       <Formik
         initialValues={currentValues}
         validationSchema={validationSchema}
@@ -227,7 +241,7 @@ const SupplierDetails = () => {
           </Form>
         )}
       </Formik>
-    </CommonContainer>
+    </Box>
   );
 };
 

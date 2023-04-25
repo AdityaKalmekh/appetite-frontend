@@ -10,6 +10,7 @@ import { GridActionsCellItem } from "@mui/x-data-grid-pro";
 import AddItem from "./AddItem";
 import ConfirmDialog from "../../common/ConFirmDialog";
 import useHttp from "../../hooks/useHttp";
+import { toast } from "react-toastify";
 
 const initialValues = {
   foodtypes: "veg",
@@ -66,6 +67,7 @@ const SupplierMenu = () => {
 
   const deleteDataResponse = (id, acknowledgement) => {
     if (acknowledgement) {
+      toast("Deleted Successfully");
       setConfirmDialog({ isOpen: false });
       const indexDelete = menuItem.findIndex((menu) => menu._id === id);
       setMenuItem((prev) => prev.filter((_, index) => index !== indexDelete));
