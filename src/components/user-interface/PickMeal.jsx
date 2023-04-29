@@ -16,18 +16,14 @@ import useHttp from "../../hooks/useHttp";
 import OrderSummary from "./OrderSummary";
 import PaymentSuccess from "./PaymentSuccess";
 
-const addOrder = (sId) => {
-  console.log({sId});
-  // sendRequest({url : "/addOrder", method : 'post',data : {}},(data) => console.log(data))
-}
-export {addOrder}
-
-const PickMeal = (supplierId) => {
+const PickMeal = ({supplierId}) => {
   const [cartBilling ,setCartBilling] = useState({
         total : 0,
         tiffinCharges : 0,
         packagingCharges : 0,
-        quantity : 0
+        quantity : 0,
+        supplierId : null,
+        userId : null
   });
   const { sendRequest } = useHttp();
   const [menu,setMenu] = useState([]);
@@ -35,9 +31,17 @@ const PickMeal = (supplierId) => {
   const [orderHandler,setOrderHandler] = useState(false);
   // const [cart, setCart] = useState({});
 
+  const addOrder = () => {
+    console.log("hii");
+    sendRequest({url : "/addOrder", 
+                 method : 'post',
+                 data : {"supplier_id" : supplierId, "user_id":localStorage.getItem('id'),
+                          "quantity":cartBilling.quantity,"totalPaid":cartBilling.total}},(data) => console.log(data))
+  }
+  
   useEffect(() => {
     sendRequest(
-      { url: `/getMenu/${supplierId.supplierId}`, method: "get" },
+      { url: `/getMenu/${supplierId}`, method: "get" },
       (data) => setMenu(data)
     );
   }, [sendRequest, supplierId]);
@@ -49,9 +53,7 @@ const PickMeal = (supplierId) => {
   const [cart, setCart] = useState({});
   console.log(cart);
 
-  addOrder(supplierId);
   
-  addOrder(sendRequest,supplierId)
   // console.log(total);
   const handleAddToCart = (productId, quantity) => {
     if (cart.hasOwnProperty(productId)) {
@@ -82,7 +84,7 @@ const PickMeal = (supplierId) => {
                         tiffinCharge += (i.tifinprice) * cart[i._id];
                         packagingcharge += (i.packagingcharge) * cart[i._id];
                         quantity += cart[i._id]});
-    setCartBilling({total:total,tiffinCharges:tiffinCharge,packagingCharges:packagingcharge,quantity:quantity})
+    setCartBilling({total:total,tiffinCharges:tiffinCharge,packagingCharges:packagingcharge,quantity:quantity,supplierId,userId:localStorage.getItem('id')})
     setOrderHandler(true);
   };
 
@@ -92,6 +94,7 @@ const PickMeal = (supplierId) => {
     {orderHandler ?(
         <OrderSummary 
           total={cartBilling}
+          // supplierId={supplierId}
         />):
       <Grid
         container

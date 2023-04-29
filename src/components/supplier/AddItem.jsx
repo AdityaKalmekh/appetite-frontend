@@ -61,7 +61,7 @@ const AddItem = ({ handleClose, currentRow, afterEdition, afterNewMenu }) => {
 
   const editDataResponse = (values,acknowledgement) => {
     if (acknowledgement){
-      toast("Updated Successfully");
+      toast.success("Updated Successfully");
       afterEdition(values);
     }
   }

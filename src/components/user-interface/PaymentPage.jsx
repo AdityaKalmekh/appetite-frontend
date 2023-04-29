@@ -3,10 +3,10 @@ import useHttp from "../../hooks/useHttp";
 import { useEffect } from "react";
 
 
-const PaymentPage = ({data}) => {
+const PaymentPage = ({orderDetails}) => {
     // console.log({data});
     const {sendRequest : sendTaskRequest} = useHttp();
-    console.log(data.total);
+    console.log(orderDetails.total);
     const response = (data) => {
         // console.log(data.order.amount);
         const options = {
@@ -17,9 +17,34 @@ const PaymentPage = ({data}) => {
             description: "Test Transaction",
             image: "https://example.com/your_logo",
             order_id: data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            callback_url: "http://localhost:5000/api/Tiffin/paymentverification",
+            // callback_url: "http://localhost:5000/api/Tiffin/paymentverification",
+            handler: async function (response){
+                console.log(response);
+                console.log(data);
+                    // var formData = new FormData();
+
+                    // formData.append("razorpay_payment_id",response.razorpay_payment_id)
+                    // formData.append("razorpay_order_id",response.razorpay_order_id)
+                    // formData.append("razorpay_signature",response.razorpay_signature)
+                    // formData.append("totalPaid",data.total)
+                    // formData.append("qunatity",data.quantity)
+          
+                // console.log(response);
+                await sendTaskRequest({
+                    url : "/paymentverification",
+                    method : "post",
+                    data : {...orderDetails,"razorpay_payment_id": response.razorpay_payment_id,"razorpay_signature":response.razorpay_signature,"razorpay_order_id":response.razorpay_order_id}
+                },(dt) => console.log(dt))
+                // const res = await axios.post("http://localhost:1337/api/paymentverification", formData, config);
+                // if (res.data.status === 401 || !res.data) {
+                //     console.log("errror")
+                // } else {
+                //     alert("Payment Successfully")
+                //     navigate("/MyOrders")
+                // }
+            },
             prefill: {
-                name: "Gaurav Kumar",
+                name: "Aditya",
                 email: "gaurav.kumar@example.com",
                 contact: "9000090000"
             },
@@ -32,19 +57,26 @@ const PaymentPage = ({data}) => {
         };
         const razor = new window.Razorpay(options);
         razor.on("payment.success", function (response) {
-            checkoutHandler(); // Call the checkoutHandler prop on success
+            // checkoutHandler(); // Call the checkoutHandler prop on success
         });
         razor.open();
     }
 
-    const checkoutHandler = async () => {
+    useEffect(() => {
         sendTaskRequest({
             url : "/payment",
             method : "post",
-            data : {amount : JSON.stringify(data.total)}
+            data : {amount : JSON.stringify(orderDetails.total)}
         },response.bind(null))
-    }
-    checkoutHandler()
+    },[sendTaskRequest,orderDetails.total])
+
+    // const checkoutHandler = async () => {
+    //     sendTaskRequest({
+    //         url : "/payment",
+    //         method : "post",
+    //         data : {amount : JSON.stringify(data.total)}
+    //     },response.bind(null))
+    // }
     // useEffect(() =>{
     //     checkoutHandler();
     // },[checkoutHandler,sendTaskRequest,response])

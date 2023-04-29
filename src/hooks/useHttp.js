@@ -18,6 +18,8 @@ const useHttp = () => {
                 setError(err.message || "Somthing went wrong")
             }
         }else if (requestConfig.method === 'post'){
+            console.log(requestConfig.data);
+            console.log(requestConfig.url);
             try {
                 const responesData = await http.post(requestConfig.url,requestConfig.data)
                 console.log({responesData});
