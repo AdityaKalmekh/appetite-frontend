@@ -15,7 +15,7 @@ import useHttp from "../../hooks/useHttp";
 
 const LoginForm = () => {
   const [openLoginOtp, setOpenLoginOtp] = useState(false);
-  const {sendRequest:sendTaskRequest} = useHttp()
+  const { sendRequest: sendTaskRequest } = useHttp();
   // console.log({ openLoginOtp });
   const [value, setValue] = useState();
 
@@ -37,40 +37,29 @@ const LoginForm = () => {
 
   console.log(sessionStorage);
 
-  const response = (result) =>{
+  const response = (result) => {
     console.log(result);
-    if (!result){
-      toast.error("Not register yet")
-    }else{
+    if (!result) {
+      toast.error("Not register yet");
+    } else {
       console.log(result);
-      localStorage.setItem("OTP",result[0]);
-      localStorage.setItem("id",result[1]);
-      localStorage.setItem("role",result[2]);
+      localStorage.setItem("OTP", result[0]);
+      localStorage.setItem("id", result[1]);
+      localStorage.setItem("role", result[2]);
       setOpenLoginOtp(true);
     }
-  }
+  };
 
   const onSubmit = (values, { resetForm }) => {
     setValue(values.phonenumber);
-    sendTaskRequest({
-      url : "/verifyUser",
-      method : "post",
-      data : {...values,for:"login"}
-    },response.bind(null))
-    // if (values) {
-    //   mobileOtp(values)
-    //     .then(async (res) => {
-    //       console.log({ res });
-    //       if (res.data.message === undefined) {
-    //         toast.error("Something went wrong");
-    //       } else {
-    //         toast.success(res.data.message);
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       toast.error(err.message);
-    //     });
-    // }
+    sendTaskRequest(
+      {
+        url: "/verifyUser",
+        method: "post",
+        data: { ...values, for: "login" },
+      },
+      response.bind(null)
+    );
     resetForm();
   };
 

@@ -1,68 +1,38 @@
-import { Box, Button, Grid, imageListClasses, Typography,Input } from "@mui/material";
+import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import CommonContainer from "../../common/CommonContainer";
 import UploadImage from "../../common/UploadImage";
 import FormikController from "../../formik/FormikController";
-import {useLoadScript,Autocomplete} from '@react-google-maps/api';
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import useHttp from "../../hooks/useHttp";
-import usePlacesAutocomplete,{getGeocode,getLatLng} from "use-places-autocomplete";
 
 const SupplierDetails = () => {
-  const {sendRequest : sendTaskRequest} = useHttp()
-  const [image,setImage] = useState()
-  const [loc,setLoc]= useState()
-  const [currentValues,setCurrentValues] = useState({
-    closingTime : "",
+  const { sendRequest: sendTaskRequest } = useHttp();
+  const [image, setImage] = useState();
+  const [currentValues, setCurrentValues] = useState({
+    closingTime: "",
     servicetitle: "",
     contact: "",
-    openingTime : "",
-    image : "",
-    supplier_id : "",
-    _id : ""
+    openingTime: "",
+    image: "",
+    supplier_id: "",
+    _id: "",
   });
-// console.log("api",process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 
-// const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-//   libraries: ['places'],
-// })
-// console.log(isLoaded);
-
-// const {value,setValue,suggestions:{status,data}} = usePlacesAutocomplete();
-
-// if (!isLoaded){
-//   // toast.error("google map not loded")
-//     // console.log("google map not loded");
-//     return <div>Loding...</div>
-//   }
-  // console.log(props.encodedimg);
-  const FoodType = [
-    {
-      value: "Veg",
-      label: "veg",
-    },
-    {
-      value: "Non Veg",
-      label: "Non veg",
-    },
-    {
-      value: "Egg",
-      label: "Egg",
-    },
-  ];
-
-  useEffect(()=>{
-    sendTaskRequest({url : "/getSupplierDetails/640de28bb230f3f9cdcaacd0",method:"get"},(data) => (setCurrentValues(currentValues.servicetitle=data.servicetitle,
-                                                                                                                    currentValues.closingTime=data.closingTime,
-                                                                                                                    currentValues.contact=data.contact,
-                                                                                                                    currentValues.openingTime=data.openingTime,
-                                                                                                                    currentValues.image=data.image,
-                                                                                                                    currentValues.supplier_id=data.supplier_id,
-                                                                                                                    currentValues._id = data._id)));
-  },[sendTaskRequest,currentValues])
-
+  useEffect(() => {
+    sendTaskRequest({ url: "/getSupplierDetails", method: "get" }, (data) =>
+      setCurrentValues(
+        (currentValues.servicetitle = data.servicetitle),
+        (currentValues.closingTime = data.closingTime),
+        (currentValues.contact = data.contact),
+        (currentValues.openingTime = data.openingTime),
+        (currentValues.image = data.image),
+        (currentValues.supplier_id = data.supplier_id),
+        (currentValues._id = data._id)
+      )
+    );
+  }, [sendTaskRequest, currentValues]);
 
   console.log(currentValues);
 
@@ -83,40 +53,42 @@ const SupplierDetails = () => {
 
   const addAcknowledgement = (acknowledgement) => {
     console.log(acknowledgement);
-  }
+  };
 
   const updateAcknowledgement = (response) => {
-    if (response){
+    if (response) {
       toast.success("Updated Successfully");
     }
-  }
+  };
 
   const onSubmit = (value) => {
-    if (value._id !== ""){
-      sendTaskRequest({
-        url : "/updateSupplierDetails",
-        method : "put",
-        data : value
-      },updateAcknowledgement.bind(null))
-    }
+    // if (value._id !== "") {
+    //   sendTaskRequest(
+    //     {
+    //       url: "/updateSupplierDetails",
+    //       method: "put",
+    //       data: value,
+    //     },
+    //     updateAcknowledgement.bind(null)
+    //   );
+    // }
     console.log(value);
-    // sendTaskRequest({
-    //   url : "/addSupplierDetail",
-    //   method : 'post',
-    //   data : {...value,image}
-    // },addAcknowledgement.bind(null))  
+    sendTaskRequest(
+      {
+        url: "/addSupplierDetail",
+        method: "post",
+        data: { ...value, image },
+      },
+      addAcknowledgement.bind(null)
+    );
   };
 
   const encodedImage = (value) => {
     setImage(value);
-  }
-
-  // const handleInput = (e) =>{
-  //   setValue(e.target.value);
-  // }
+  };
 
   return (
-    <Box  sx={{paddingX:'2rem'}}>
+    <Box sx={{ paddingX: "2rem", paddingTop: "2rem" }}>
       <Formik
         initialValues={currentValues}
         validationSchema={validationSchema}
@@ -126,9 +98,8 @@ const SupplierDetails = () => {
           <Form>
             <Box
               sx={{
-                border: "1px solid grey",
+                border: "1px solid lightgrey",
                 padding: "2rem",
-                borderRadius: "4px",
               }}
             >
               <Grid container>
@@ -136,14 +107,21 @@ const SupplierDetails = () => {
                   item
                   xs={12}
                   sx={{
-                    padding: "1rem",
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Typography variant="h4">Tiffin Service Details</Typography>
+                  <Typography variant="h4">Account Service Details</Typography>
+                </Grid>
+                <Grid item xs={12} sx={{ paddingY: "1rem" }}>
+                  <Divider sx={{ width: "100%", borderWidth: "600" }} />
                 </Grid>
                 <Grid container item spacing={1}>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle2">
+                      Note: Mention time uptill when orders are taken
+                    </Typography>
+                  </Grid>
                   <Grid item xs={6}>
                     <FormikController
                       control="text"
@@ -180,7 +158,7 @@ const SupplierDetails = () => {
                       }
                     />
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6}>
                     <FormikController
                       control="text"
                       type="text"
@@ -194,11 +172,8 @@ const SupplierDetails = () => {
                       }
                       helperText={formik.touched.timing && formik.errors.timing}
                     />
-                    {/* <Typography variant="subtitle2" color="red">
-                      *Mention time uptill when orders are taken
-                    </Typography> */}
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6}>
                     <FormikController
                       control="text"
                       type="text"
@@ -212,22 +187,29 @@ const SupplierDetails = () => {
                       }
                       helperText={formik.touched.timing && formik.errors.timing}
                     />
-                    {/* <Typography variant="subtitle2" color="red">
-                      *Mention time uptill when orders are taken
-                    </Typography> */}
                   </Grid>
-                  <Grid item md={6} xs={12}>
-                    <Typography
-                      variant="subtitle1"
-                      sx={{ paddingBottom: ".5rem" }}
-                    >
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle1" sx={{ color: "grey" }}>
                       <span>Uplod Image</span>
                     </Typography>
                     <UploadImage encodedImage={encodedImage} />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sx={{ paddingTop: "2rem" }}>
                     <Button
+                      fullWidth
                       variant="outlined"
+                      sx={{
+                        backgroundColor: "#04D010",
+                        color: "#063340",
+                        "&:hover": {
+                          backgroundColor: "#063340",
+                          borderColor: "#063340",
+                          color: "#04D010",
+                          boxShadow: "none",
+                        },
+                        borderRadius: "0rem",
+                        fontSize: "16px",
+                      }}
                       onClick={() => {
                         onSubmit(formik.values);
                       }}

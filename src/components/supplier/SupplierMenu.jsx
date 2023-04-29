@@ -123,7 +123,7 @@ const SupplierMenu = () => {
       renderCell: ({ row }) => (
         <strong>
           <GridActionsCellItem
-            icon={<DeleteIcon />}
+            icon={<DeleteIcon sx={{ color: "#063340" }} />}
             label="Delete"
             onClick={handleDeleteClick(row)}
             color="inherit"
@@ -138,7 +138,7 @@ const SupplierMenu = () => {
       renderCell: ({ row }) => (
         <strong>
           <GridActionsCellItem
-            icon={<EditIcon />}
+            icon={<EditIcon sx={{ color: "#063340" }} />}
             label="Edit"
             onClick={handleEditClick(row)}
             color="inherit"
@@ -153,7 +153,8 @@ const SupplierMenu = () => {
       <>
         <Button
           color="primary"
-          startIcon={<AddIcon />}
+          sx={{ color: "#063340" }}
+          startIcon={<AddIcon sx={{ color: "#063340" }} />}
           onClick={handleClickOpen}
         >
           Add New Item

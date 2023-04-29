@@ -8,31 +8,30 @@ const UploadImage = ({ encodedImage, name, error, imageLink }) => {
   const [loadUpload, setLoadUpload] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const [imageName, setImageName] = useState();
-  
-  // console.log({imageProp});
+
   const convertToBase64 = (file) => {
-    return new Promise((resolve,reject) =>{
+    return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
-        resolve(fileReader.result)
+        resolve(fileReader.result);
       };
       fileReader.onerror = (error) => {
-        reject(error)
-      }
-    })
-  } 
-  
+        reject(error);
+      };
+    });
+  };
+
   const onSelectFile = async (e) => {
     e.preventDefault();
     // setLoadUpload(true);
     const files = e.target.files[0];
-    const base64 = await convertToBase64(files)
-    console.log({base64});
-    console.log({files});
+    const base64 = await convertToBase64(files);
+    console.log({ base64 });
+    console.log({ files });
     // setImageUrl(response.data);
     setImageName(files);
-    encodedImage(base64)
+    encodedImage(base64);
     // <SupplierDetails encodedimg={"hello"}/>
     // imageProp(response.data, name);
     // setLoadUpload(false);
@@ -42,9 +41,10 @@ const UploadImage = ({ encodedImage, name, error, imageLink }) => {
     grid: {
       display: "flex",
       alignItems: "center",
-      border: "1px solid grey",
+      border: "1px solid lightgrey",
       borderRadius: "4px",
-      padding: "2rem",
+      paddingX: "1rem",
+      paddingY: ".8rem",
     },
     typography: {
       display: "-webkit-box",
@@ -56,16 +56,25 @@ const UploadImage = ({ encodedImage, name, error, imageLink }) => {
     },
   };
 
-  
   return (
     <form>
-      <Grid container spacing={1} sx={styles.grid} ml=".1rem">
+      <Grid container sx={styles.grid}>
         <Grid item md={6} xs={6}>
           <Button
             component="label"
-            variant="outlined"
+            variant="contained"
             size="small"
-            startIcon={<AddIcon />}
+            sx={{
+              backgroundColor: "#04D010",
+              color: "#063340",
+              "&:hover": {
+                backgroundColor: "#063340",
+                borderColor: "#063340",
+                color: "#04D010",
+                boxShadow: "none",
+              },
+            }}
+            startIcon={<AddIcon sx={{ color: "#063340" }} />}
           >
             <Box>
               Choose File

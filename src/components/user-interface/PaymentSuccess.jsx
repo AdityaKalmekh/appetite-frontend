@@ -1,7 +1,5 @@
 const PaymentSuccess = () => {
-    return (
-        <div>Order Book Successfully</div>
-    )
-}
+  return <div>Order Book Successfully</div>;
+};
 
-export default PaymentSuccess
+export default PaymentSuccess;

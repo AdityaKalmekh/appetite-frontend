@@ -121,7 +121,7 @@ const mainListItems = (
           }}
         >
           <ListItemIcon>
-            <Icon />
+            <Icon sx={{ color: "#04D010" }} />
           </ListItemIcon>
           <ListItemText primary={literal} />
         </ListItemButton>
@@ -133,20 +133,15 @@ const mainListItems = (
 export default function SupplierDashboard() {
   const theme = useTheme();
   const { isDrawerOpened, toggleDrawer } = UseLayoutContext();
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={isDrawerOpened} sx={{backgroundColor:'#04D010'}}>
+      <AppBar
+        position="fixed"
+        open={isDrawerOpened}
+        sx={{ backgroundColor: "#04D010" }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -160,8 +155,9 @@ export default function SupplierDashboard() {
           >
             <MenuIcon />
           </IconButton>
+          <img alt="icon" src="/images/icon1.png" width="60" height="60" />
           <Typography variant="h6" noWrap component="div">
-            Applite
+            APPELITE
           </Typography>
         </Toolbar>
       </AppBar>
@@ -178,7 +174,7 @@ export default function SupplierDashboard() {
         <Divider />
         <List component="nav">{mainListItems}</List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1 }}>
         <DrawerHeader />
       </Box>
     </Box>
