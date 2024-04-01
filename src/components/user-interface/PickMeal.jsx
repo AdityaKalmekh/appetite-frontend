@@ -15,8 +15,10 @@ import React, { useEffect, useState } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import useHttp from "../../hooks/useHttp";
 import OrderSummary from "./OrderSummary";
+import { useAuthContext } from "../../context/AuthContext";
 
-const PickMeal = ({ supplierId }) => {
+const PickMeal = () => {
+  const { supplier } = useAuthContext();
   const [cartBilling, setCartBilling] = useState({
     total: 0,
     tiffinCharges: 0,
@@ -30,10 +32,10 @@ const PickMeal = ({ supplierId }) => {
   const [orderHandler, setOrderHandler] = useState(false);
 
   useEffect(() => {
-    sendRequest({ url: `/getMenu/${supplierId}`, method: "get" }, (data) =>
+    sendRequest({ url: `/getMenu/${supplier}`, method: "get" }, (data) =>
       setMenu(data)
     );
-  }, [sendRequest, supplierId]);
+  }, [sendRequest, supplier]);
 
   const [cart, setCart] = useState({});
 
@@ -67,7 +69,7 @@ const PickMeal = ({ supplierId }) => {
       tiffinCharges: tiffinCharge,
       packagingCharges: packagingcharge,
       quantity: quantity,
-      supplierId,
+      supplier,
       userId: localStorage.getItem("id"),
     });
     setOrderHandler(true);

@@ -9,26 +9,26 @@ import { CardMedia, Divider } from "@mui/material";
 import { Form, Formik } from "formik";
 import FormikController from "../../formik/FormikController";
 import { toast } from "react-toastify";
-import { useState,useEffect } from "react";
-import HomePage from "../user-interface/HomePage"
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginFormOTP = (phonenumber) => {
-  const [otpTimer,setOtpTimer] = useState(60);
-  const[homePage,setHomePage] = useState(false);
-  
+  const navigate = useNavigate();
+  const [otpTimer, setOtpTimer] = useState(60);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      if (otpTimer > 0){
-        setOtpTimer(seconds => seconds - 1);
+      if (otpTimer > 0) {
+        setOtpTimer((seconds) => seconds - 1);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [otpTimer]); 
+  }, [otpTimer]);
 
   const initialValues = {
     loginotp: "",
   };
-  
+
   const validationSchema = Yup.object({
     loginotp: Yup.string()
       .required()
@@ -37,28 +37,26 @@ const LoginFormOTP = (phonenumber) => {
       .max(6, "Must be exactly 6 digits"),
   });
 
-  setTimeout(function() {
-    localStorage.removeItem('OTP')
-  },60000)
+  setTimeout(function () {
+    localStorage.removeItem("OTP");
+  }, 60000);
 
   const onSubmit = (values, { resetForm }) => {
-    if (values.loginotp === parseInt(localStorage.getItem('OTP'))){
+    if (values.loginotp === parseInt(localStorage.getItem("OTP"))) {
       console.log(localStorage.getItem("id"));
       console.log("loggin successfully");
-      toast.success('Login successfully')
-      setHomePage(true);
-    }else if (localStorage.getItem('OTP') === null){
+      toast.success("Login successfully");
+      navigate("/HomePage");
+    } else if (localStorage.getItem("OTP") === null) {
       console.log("OTP expire");
-      toast.error('OTP expire')
-    }else{
-      toast.error('Invalid OTP');
+      toast.error("OTP expire");
+    } else {
+      toast.error("Invalid OTP");
     }
     resetForm();
   };
 
   return (
-    <>
-    {homePage === false ? (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
@@ -223,9 +221,7 @@ const LoginFormOTP = (phonenumber) => {
           </Grid>
         </Form>
       )}
-    </Formik>):( 
-    <HomePage/>)}
-  </>
+    </Formik>
   );
 };
 

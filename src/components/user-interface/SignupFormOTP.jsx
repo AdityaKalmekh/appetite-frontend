@@ -9,38 +9,39 @@ import { CardMedia, Divider } from "@mui/material";
 import FormikController from "../../formik/FormikController";
 import { Form, Formik } from "formik";
 import useHttp from "../../hooks/useHttp";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignupFormOTP = (values) => {
-  const [otpTimer,setOtpTimer] = useState(60);
-  
+  const navigate = useNavigate();
+  const [otpTimer, setOtpTimer] = useState(60);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      if (otpTimer > 0){
-        setOtpTimer(seconds => seconds - 1);
+      if (otpTimer > 0) {
+        setOtpTimer((seconds) => seconds - 1);
       }
     }, 1000);
     return () => clearInterval(interval);
   }, [otpTimer]);
 
-  // console.log(values);
-  const {sendRequest} = useHttp()
+  const { sendRequest } = useHttp();
   const initialValues = {
     signupotp: "",
   };
 
-  setTimeout(function() {
-    localStorage.removeItem('OTP')
-  },60000)
-  // let name = localStorage.getItem('OTP')
-  // console.log(name);
-  
-  const addUserAcknowledgement = (id) =>{
+  setTimeout(function () {
+    localStorage.removeItem("OTP");
+  }, 60000);
+
+  const addUserAcknowledgement = (id) => {
     console.log(id);
-    if (id){
-      console.log("Successfully register");
+    if (id) {
+      toast.success("Register Successfully");
+      navigate("/Login");
     }
-  }
+  };
 
   const validationSchema = Yup.object({
     signupotp: Yup.string()
@@ -51,27 +52,21 @@ const SignupFormOTP = (values) => {
   });
 
   const onSubmit = (value) => {
-    console.log(value.signupotp);
-    console.log(localStorage.getItem('OTP'));
-    if (value.signupotp === parseInt(localStorage.getItem('OTP'))){
-      sendRequest({
-        url : '/addUser',
-        method: 'post',
-        data : values
-      },addUserAcknowledgement.bind(null))
-      localStorage.removeItem('OTP')
-    }else if (localStorage.getItem('OTP') === null){
+    if (value.signupotp === parseInt(localStorage.getItem("OTP"))) {
+      sendRequest(
+        {
+          url: "/addUser",
+          method: "post",
+          data: values,
+        },
+        addUserAcknowledgement.bind(null)
+      );
+      localStorage.removeItem("OTP");
+    } else if (localStorage.getItem("OTP") === null) {
       console.log("OTP expire");
-    }else{
-      console.log('Wrong OTP');
+    } else {
+      console.log("Wrong OTP");
     }
-    // event.preventDefault();
-    // console.log(event.target.value);
-    // const data = new FormData(event.currentTarget);
-    // console.log({data});
-    // console.log({
-    //   password: data.get("signupotp"),
-    // });
   };
 
   return (
