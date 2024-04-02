@@ -11,7 +11,7 @@ import Content from "../layout/Content";
 const AppLayout = () => {
   const { host } = window.location;
   const { isDrawerOpened } = UseLayoutContext();
-
+console.log({host})
   return (
     <>
       {host === "localhost:3000" ? (

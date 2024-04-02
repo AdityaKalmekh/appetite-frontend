@@ -24,6 +24,7 @@ const PickMeal = ({ supplierId }) => {
     quantity: 0,
     supplierId: null,
     userId: null,
+    menuList : {}
   });
   const { sendRequest } = useHttp();
   const [menu, setMenu] = useState([]);
@@ -44,7 +45,7 @@ const PickMeal = ({ supplierId }) => {
       setCart({ ...cart, [productId]: quantity });
     }
   };
-
+  console.log(cart);
   const handleRemoveToCart = (productId, quantity, price) => {
     if (cart.hasOwnProperty(productId) && cart[productId] > 0) {
       setCart({ ...cart, [productId]: cart[productId] - 1 });
@@ -69,10 +70,12 @@ const PickMeal = ({ supplierId }) => {
       quantity: quantity,
       supplierId,
       userId: localStorage.getItem("id"),
+      menuList:cart
     });
     setOrderHandler(true);
   };
 
+  console.log(cart);
   return (
     <>
       {orderHandler ? (

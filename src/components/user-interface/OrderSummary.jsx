@@ -14,7 +14,8 @@ import PaymentPage from "./PaymentPage";
 const OrderSummary = ({ total, checkoutHandler }) => {
   const initialValues = {};
   const [payment, setPayment] = useState(false);
-
+  
+  console.log({total});
   const paymentHandler = () => {
     setPayment(true);
   };
